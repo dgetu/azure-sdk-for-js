@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Correted permission string parsing in DataLakePathClient.setPermissions() and DataLakePathClient.getAccessControl().
+
 ### Other Changes
 
 ## 12.10.0 (2022-07-08)
