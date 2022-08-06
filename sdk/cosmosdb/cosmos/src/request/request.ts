@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+import { logger } from "@azure/identity";
 import { setAuthorizationHeader } from "../auth";
 import { Constants, HTTPMethod, jsonStringifyAndEscapeNonASCII, ResourceType } from "../common";
 import { CosmosClientOptions } from "../CosmosClientOptions";
@@ -128,6 +129,13 @@ export async function getHeaders({
   }
 
   if (options.maxIntegratedCacheStalenessInMs && resourceType === ResourceType.item) {
+    if (options.maxIntegratedCacheStalenessInMs === 0) {
+      // TODO - log error with Cosmos diagnosics.
+      logger.error(
+        `maxIntegratedCacheStalenessInMs cannot be zero. Default value is null Cache Staleness is supported in milliseconds granularity. Anything smaller than milliseconds or 0 will be ignored. value: ${options.maxIntegratedCacheStalenessInMs}`
+      );
+      return;
+    }
     headers[Constants.HttpHeaders.DedicatedGatewayPerRequestCacheStaleness] =
       options.maxIntegratedCacheStalenessInMs;
   }
