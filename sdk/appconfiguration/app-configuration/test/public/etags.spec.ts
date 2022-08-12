@@ -11,6 +11,7 @@ import {
 import { assert } from "chai";
 import { Recorder } from "@azure-tools/test-recorder";
 import { Context } from "mocha";
+import { v4 as uuid } from "uuid";
 
 describe("etags", () => {
   let client: AppConfigurationClient;
@@ -18,8 +19,8 @@ describe("etags", () => {
   let key: string;
 
   beforeEach(async function (this: Context) {
-    recorder = startRecorder(this);
-    key = recorder.getUniqueName("etags");
+    recorder = await startRecorder(this);
+    key = recorder.variable("etags", uuid());
     client = createAppConfigurationClientForTests() || this.skip();
     await client.addConfigurationSetting({
       key: key,

@@ -13,6 +13,7 @@ import {
 import { Recorder } from "@azure-tools/test-recorder";
 import { Context } from "mocha";
 import { FeatureFlagValue, isFeatureFlag, parseFeatureFlag } from "../../src/featureFlag";
+import { v4 as uuid } from "uuid";
 
 describe("AppConfigurationClient - FeatureFlag", () => {
   describe("FeatureFlag configuration setting", () => {
@@ -22,7 +23,7 @@ describe("AppConfigurationClient - FeatureFlag", () => {
     let addResponse: AddConfigurationSettingResponse;
 
     beforeEach(async function (this: Context) {
-      recorder = startRecorder(this);
+      recorder = await startRecorder(this);
       client = createAppConfigurationClientForTests() || this.skip();
       baseSetting = {
         value: {
@@ -57,7 +58,7 @@ describe("AppConfigurationClient - FeatureFlag", () => {
           displayName: "for display",
         },
         isReadOnly: false,
-        key: `${featureFlagPrefix + recorder.getUniqueName("name-1")}`,
+        key: `${featureFlagPrefix + recorder.variable("name-1", uuid())}`,
         contentType: featureFlagContentType,
         label: "label-1",
       };
@@ -191,11 +192,11 @@ describe("AppConfigurationClient - FeatureFlag", () => {
     let recorder: Recorder;
     let featureFlag: ConfigurationSetting<FeatureFlagValue>;
     beforeEach(async function (this: Context) {
-      recorder = startRecorder(this);
+      recorder = await startRecorder(this);
       client = createAppConfigurationClientForTests() || this.skip();
       featureFlag = {
         contentType: featureFlagContentType,
-        key: `${featureFlagPrefix}${recorder.getUniqueName("name-1")}`,
+        key: `${featureFlagPrefix}${recorder.variable("name-1", uuid())}`,
         isReadOnly: false,
         value: { conditions: { clientFilters: [] }, enabled: true },
       };

@@ -14,13 +14,14 @@ import {
 } from "../../src";
 import { Recorder } from "@azure-tools/test-recorder";
 import { Context } from "mocha";
+import { v4 as uuid } from "uuid";
 
 describe("AppConfigurationClient - SecretReference", () => {
   let client: AppConfigurationClient;
   let recorder: Recorder;
 
-  beforeEach(function (this: Context) {
-    recorder = startRecorder(this);
+  beforeEach(async function (this: Context) {
+    recorder = await startRecorder(this);
     client = createAppConfigurationClientForTests() || this.skip();
   });
 
@@ -32,12 +33,13 @@ describe("AppConfigurationClient - SecretReference", () => {
     const getBaseSetting = (): ConfigurationSetting<SecretReferenceValue> => {
       return {
         value: {
-          secretId: `https://vault_name.vault.azure.net/secrets/${recorder.getUniqueName(
-            "name-2"
+          secretId: `https://vault_name.vault.azure.net/secrets/${recorder.variable(
+            "name-2",
+            uuid()
           )}`,
         },
         isReadOnly: false,
-        key: recorder.getUniqueName("name-3"),
+        key: recorder.variable("name-3", uuid()),
         label: "label-s",
         contentType: secretReferenceContentType,
       };
@@ -89,8 +91,9 @@ describe("AppConfigurationClient - SecretReference", () => {
         key: baseSetting.key,
         label: baseSetting.label,
       });
-      const newSecretId = `https://vault_name.vault.azure.net/secrets/${recorder.getUniqueName(
-        "name-4"
+      const newSecretId = `https://vault_name.vault.azure.net/secrets/${recorder.variable(
+        "name-4",
+        uuid()
       )}`;
 
       assertSecretReferenceProps(getResponse, baseSetting);
@@ -118,8 +121,9 @@ describe("AppConfigurationClient - SecretReference", () => {
         ...baseSetting,
         key: `${baseSetting.key}-2`,
       };
-      const newSecretId = `https://vault_name.vault.azure.net/secrets/${recorder.getUniqueName(
-        "name-5"
+      const newSecretId = `https://vault_name.vault.azure.net/secrets/${recorder.variable(
+        "name-5",
+        uuid()
       )}`;
       await client.addConfigurationSetting(secondSetting);
 
@@ -171,7 +175,7 @@ describe("AppConfigurationClient - SecretReference", () => {
       it(`Unexpected value ${value} as secret reference value`, async () => {
         const setting: ConfigurationSetting<SecretReferenceValue> = {
           contentType: secretReferenceContentType,
-          key: recorder.getUniqueName("name-1"),
+          key: recorder.variable("name-1", uuid()),
           isReadOnly: false,
           value: { secretId: "id" },
         };

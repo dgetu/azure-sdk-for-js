@@ -8,13 +8,7 @@ import {
   ListConfigurationSettingPage,
   ListRevisionsPage,
 } from "../../../src";
-import {
-  Recorder,
-  RecorderEnvironmentSetup,
-  env,
-  isPlaybackMode,
-  record,
-} from "@azure-tools/test-recorder";
+import { Recorder, env, isPlaybackMode } from "@azure-tools/test-recorder";
 import { assert } from "chai";
 
 import { DefaultAzureCredential, TokenCredential } from "@azure/identity";

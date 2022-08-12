@@ -11,6 +11,7 @@ import {
 import { assert } from "chai";
 import { Recorder } from "@azure-tools/test-recorder";
 import { Context } from "mocha";
+import { v4 as uuid } from "uuid";
 
 // There's been discussion on other teams about what errors are thrown when. This
 // is the file where I've documented the throws/notThrows cases to make coordination
@@ -21,8 +22,8 @@ describe("Various error cases", () => {
   let recorder: Recorder;
   const nonMatchingETag = "never-match-etag";
 
-  beforeEach(function (this: Context) {
-    recorder = startRecorder(this);
+  beforeEach(async function (this: Context) {
+    recorder = await startRecorder(this);
     client = createAppConfigurationClientForTests() || this.skip();
   });
 
@@ -36,7 +37,7 @@ describe("Various error cases", () => {
 
     beforeEach(async () => {
       addedSetting = await client.addConfigurationSetting({
-        key: recorder.getUniqueName(`etags`),
+        key: recorder.variable(`etags`, uuid()),
         value: "world",
       });
 
@@ -97,7 +98,7 @@ describe("Various error cases", () => {
 
       // the 'no label' value for 'hello'
       addedSetting = await client.addConfigurationSetting({
-        key: recorder.getUniqueName(`etags`),
+        key: recorder.variable(`etags`, uuid()),
         value: "world",
       });
 

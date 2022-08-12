@@ -6,13 +6,14 @@ import { assert } from "@azure/test-utils";
 import { Context } from "mocha";
 import { AppConfigurationClient } from "../../src/appConfigurationClient";
 import { createAppConfigurationClientForTests, startRecorder } from "./utils/testHelpers";
+import { v4 as uuid } from "uuid";
 
 describe("supports tracing", () => {
   let client: AppConfigurationClient;
   let recorder: Recorder;
 
   beforeEach(async function (this: Context) {
-    recorder = startRecorder(this);
+    recorder = await startRecorder(this);
     client = createAppConfigurationClientForTests() || this.skip();
   });
 
@@ -21,7 +22,7 @@ describe("supports tracing", () => {
   });
 
   it("can trace through the various options", async function () {
-    const key = recorder.getUniqueName("noLabelTests");
+    const key = recorder.variable("noLabelTests", uuid());
     await assert.supportsTracing(
       async (options) => {
         const promises: Promise<any>[] = [
