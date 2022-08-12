@@ -15,8 +15,8 @@ describe("Authentication", () => {
   let credsAndEndpoint: CredsAndEndpoint;
   let recorder: Recorder;
 
-  beforeEach(function (this: Context) {
-    recorder = startRecorder(this);
+  beforeEach(async function (this: Context) {
+    recorder = await startRecorder(this);
     credsAndEndpoint = getTokenAuthenticationCredential() || this.skip();
   });
 

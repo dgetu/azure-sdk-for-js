@@ -28,9 +28,11 @@ export interface CredsAndEndpoint {
   endpoint: string;
 }
 
-export function startRecorder(that: Mocha.Context): Recorder {
-  const recorderEnvSetup: RecorderEnvironmentSetup = {
-    replaceableVariables: {
+export async function startRecorder(that: Mocha.Context): Promise<Recorder> {
+  let recorder = new Recorder(that.currentTest);
+
+  await recorder.start({
+    envSetupForPlayback: {
       APPCONFIG_CONNECTION_STRING:
         "Endpoint=https://myappconfig.azconfig.io;Id=123456;Secret=123456",
       AZ_CONFIG_ENDPOINT: "https://myappconfig.azconfig.io",
@@ -38,11 +40,9 @@ export function startRecorder(that: Mocha.Context): Recorder {
       AZURE_CLIENT_SECRET: "azure_client_secret",
       AZURE_TENANT_ID: "azuretenantid",
     },
-    customizationsOnRecordings: [],
-    queryParametersToSkip: [],
-  };
+  });
 
-  return record(that, recorderEnvSetup);
+  return recorder;
 }
 
 export function getTokenAuthenticationCredential(): CredsAndEndpoint | undefined {
