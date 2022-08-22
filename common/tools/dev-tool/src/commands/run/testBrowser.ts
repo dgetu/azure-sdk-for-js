@@ -10,9 +10,13 @@ export const commandInfo = makeCommandInfo(
 );
 
 export default leafCommand(commandInfo, async (options) => {
-  const karmaArgs = options["--"]?.length ? options["--"]?.join(" ") : "--single-run";
+  const defaultMochaArgs =
+    "-r esm -r ts-node/register --reporter ../../../common/tools/mocha-multi-reporter.js --full-trace";
+  const mochaArgs = options["--"]?.length
+    ? options["--"]?.join(" ")
+    : '--timeout 1200000 "test/**/*.spec.ts"';
   return runTestsWithProxyTool({
-    command: `karma start ${karmaArgs}`,
+    command: `mocha ${defaultMochaArgs} ${mochaArgs}`,
     name: "browser-tests",
   });
 });

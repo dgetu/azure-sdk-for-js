@@ -2037,6 +2037,15 @@ packages:
       lodash.merge: 4.6.2
     dev: false
 
+  /@playwright/test/1.25.0:
+    resolution: {integrity: sha512-j4EZhTTQI3dBeWblE21EV//swwmBtOpIrLdOIJIRv4uqsLdHgBg1z+JtTg+AeC5o2bAXIE26kDNW5A0TimG8Bg==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dependencies:
+      '@types/node': 18.6.1
+      playwright-core: 1.25.0
+    dev: false
+
   /@rollup/plugin-commonjs/11.0.2_rollup@1.32.1:
     resolution: {integrity: sha512-MPYGZr0qdbV5zZj8/2AuomVpnRVXRU5XKXb3HVniwRoRCreGlf5kOE081isNWeiLIi6IYkwTX9zE0/c7V8g81g==}
     engines: {node: '>= 8.0.0'}
@@ -4074,7 +4083,7 @@ packages:
     dependencies:
       semver: 7.3.7
       shelljs: 0.8.5
-      typescript: 4.9.0-dev.20220818
+      typescript: 4.9.0-dev.20220822
     dev: false
 
   /downlevel-dts/0.4.0:
@@ -7463,6 +7472,21 @@ packages:
       find-up: 4.1.0
     dev: false
 
+  /playwright-core/1.25.0:
+    resolution: {integrity: sha512-kZ3Jwaf3wlu0GgU0nB8UMQ+mXFTqBIFz9h1svTlNduNKjnbPXFxw7mJanLVjqxHJRn62uBfmgBj93YHidk2N5Q==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: false
+
+  /playwright/1.25.0:
+    resolution: {integrity: sha512-Z+pQNWI17Qx/tHhnmgMmPsptsisXpKgAnUvYv98kctlHUJaqMt2400P8kTw9vEPoC0xdxqu0JhxO7pDTmaaIKw==}
+    engines: {node: '>=14'}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      playwright-core: 1.25.0
+    dev: false
+
   /prebuild-install/7.1.1:
     resolution: {integrity: sha512-jAXscXWMcCK8GgCoHOfIr0ODh5ai8mj63L2nWrjuAgXE6tDyYGnx4/8o/rCgU+B4JSyZBKbeZqzhtwtC3ovxjw==}
     engines: {node: '>=10'}
@@ -8981,8 +9005,8 @@ packages:
     hasBin: true
     dev: false
 
-  /typescript/4.9.0-dev.20220818:
-    resolution: {integrity: sha512-ZZjfmlQjCCLcaeq44pbWI72eNdOzLraKJfPGRu8P7D1zuiiYz9aU/UQX85TVCCWpZ4Yfwz3SRu6Ejw0EK+224A==}
+  /typescript/4.9.0-dev.20220822:
+    resolution: {integrity: sha512-AOwv5P9FEACID+BXIvdWuP/ZroTJ0YaB6Cl3vP865CP2PC8E3HXuqZwNtbY0ikfCzgSiArprv+rnAAH+6Gkpxw==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: false
@@ -15290,7 +15314,7 @@ packages:
     dev: false
 
   file:projects/communication-alpha-ids.tgz:
-    resolution: {integrity: sha512-QLuMWCNCenwRrDYBKCKVsN2UQsunFJIppNZzIvCW2Chds2GbGV0IKjBOGTo3nxzIS0UCn78RC/Lybnm0HIzM5Q==, tarball: file:projects/communication-alpha-ids.tgz}
+    resolution: {integrity: sha512-w8wr6e5eULQP0PukqqdtgA/JjiSBOxmJs4rWa33DIo4PaTkj2jaJn2o/fZLc/7GyC9ahp2/9WuOXTNRQoh7PeA==, tarball: file:projects/communication-alpha-ids.tgz}
     name: '@rush-temp/communication-alpha-ids'
     version: 0.0.0
     dependencies:
@@ -15333,7 +15357,7 @@ packages:
     dev: false
 
   file:projects/communication-chat.tgz:
-    resolution: {integrity: sha512-rm2F+CMQH1g+ocjRW1BiUDm4qcrOtV/IKmgwOM9MnF5kHj6FIPECExUsxNHjmMLELd6ypEl4c/6nD4kCCTM+Eg==, tarball: file:projects/communication-chat.tgz}
+    resolution: {integrity: sha512-hfbv/NLv32X/MkK2g4t4EWLmSt5+usgrWm42F04w9dwMZLO7PQldEizLAz/9/m8iGMyHzeO401ttQYZEqtyFOQ==, tarball: file:projects/communication-chat.tgz}
     name: '@rush-temp/communication-chat'
     version: 0.0.0
     dependencies:
@@ -15470,7 +15494,7 @@ packages:
     dev: false
 
   file:projects/communication-identity.tgz:
-    resolution: {integrity: sha512-4uTyXHzDVdFLtvfyIM2zWDegP6NOy6bBYpL97FLzLDIIedUtmQcnxRHPgMW9oQp8mVqRp/adKls8E8PhmpMtgA==, tarball: file:projects/communication-identity.tgz}
+    resolution: {integrity: sha512-9FgHQZnCCBqwtOy+WfIkvy3YF5IA2pnE7tbsFs427LlAm5xITEtPWJYHjPVcGbLoX/lL3qo0epwTWfjsSiaNVA==, tarball: file:projects/communication-identity.tgz}
     name: '@rush-temp/communication-identity'
     version: 0.0.0
     dependencies:
@@ -17414,7 +17438,7 @@ packages:
     dev: false
 
   file:projects/monitor-ingestion.tgz:
-    resolution: {integrity: sha512-nbSlSEVxBuLg23r38GJ4lsg7EbMa34YTYYNU+LQyns44Z8qM3wEvdkPu6F/EE+eFTOmpeWmK72OaNZKthLdOEg==, tarball: file:projects/monitor-ingestion.tgz}
+    resolution: {integrity: sha512-1iuICt8ODAZhN99QyWO/p7FFat8LRWq2/zvdyC/RwW7mPjqK+MumVAHGO6vsMlzpAvYKnIOe1UvJ0+NcDBAezw==, tarball: file:projects/monitor-ingestion.tgz}
     name: '@rush-temp/monitor-ingestion'
     version: 0.0.0
     dependencies:
@@ -19127,12 +19151,13 @@ packages:
     dev: false
 
   file:projects/template.tgz:
-    resolution: {integrity: sha512-tM92b/xsz8s3l1+YA8+8BPxfhG1qesqcHjQd/RTvrriA5NtEZ8Ul0LTgM4B5TqlrDDEAmGQAaawY7afDIqISyw==, tarball: file:projects/template.tgz}
+    resolution: {integrity: sha512-mimKuL/fhVJQKAOjaC54XT6oOOikyrTvpgX1srZ+L/pPKcBxR54KHk9o8Oz3Pv1tIT8F8J6CC9OHu6Hvd6DXqQ==, tarball: file:projects/template.tgz}
     name: '@rush-temp/template'
     version: 0.0.0
     dependencies:
       '@azure/identity': 2.1.0
       '@microsoft/api-extractor': 7.18.11
+      '@playwright/test': 1.25.0
       '@types/chai': 4.3.1
       '@types/mocha': 7.0.2
       '@types/node': 12.20.55
@@ -19158,6 +19183,7 @@ packages:
       mocha: 7.2.0
       mocha-junit-reporter: 2.0.2_mocha@7.2.0
       nyc: 15.1.0
+      playwright: 1.25.0
       prettier: 2.7.1
       rimraf: 3.0.2
       source-map-support: 0.5.21
