@@ -298,6 +298,7 @@ specifiers:
   '@rush-temp/template': file:./projects/template.tgz
   '@rush-temp/test-credential': file:./projects/test-credential.tgz
   '@rush-temp/test-recorder': file:./projects/test-recorder.tgz
+  '@rush-temp/test-server': file:./projects/test-server.tgz
   '@rush-temp/test-utils': file:./projects/test-utils.tgz
   '@rush-temp/test-utils-perf': file:./projects/test-utils-perf.tgz
   '@rush-temp/testing-recorder-new': file:./projects/testing-recorder-new.tgz
@@ -603,6 +604,7 @@ dependencies:
   '@rush-temp/template': file:projects/template.tgz
   '@rush-temp/test-credential': file:projects/test-credential.tgz
   '@rush-temp/test-recorder': file:projects/test-recorder.tgz
+  '@rush-temp/test-server': file:projects/test-server.tgz
   '@rush-temp/test-utils': file:projects/test-utils.tgz
   '@rush-temp/test-utils-perf': file:projects/test-utils-perf.tgz
   '@rush-temp/testing-recorder-new': file:projects/testing-recorder-new.tgz
@@ -4095,7 +4097,7 @@ packages:
     dependencies:
       semver: 7.3.7
       shelljs: 0.8.5
-      typescript: 4.9.0-dev.20220829
+      typescript: 4.9.0-dev.20220902
     dev: false
 
   /downlevel-dts/0.4.0:
@@ -9098,8 +9100,8 @@ packages:
     hasBin: true
     dev: false
 
-  /typescript/4.9.0-dev.20220829:
-    resolution: {integrity: sha512-JPUwN18SBzfknl8eLExxWrNo8H98PrZMQdNTXRFYlQFv6qg56e3H/gaJn8Bmo2xz6L1vADwzbMHIp4PAWjskQw==}
+  /typescript/4.9.0-dev.20220902:
+    resolution: {integrity: sha512-K1iMNFhcRuYtQxDQD2JHECQ0x24OzwOD09TBFuRsIhnxzOG6XUU01tkKcCYgb//DkNDD6Jy+MpHf8SxzvPCnIA==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: false
@@ -15669,7 +15671,7 @@ packages:
     dev: false
 
   file:projects/communication-job-router.tgz:
-    resolution: {integrity: sha512-f2VzRwK94ENNXQYhHUwoDmbYDN0TOFYwlwLo3qthLuSROqb3XRi0Klw4LgqiIgQKO2NxU3nQzAeDaeVs6NegvQ==, tarball: file:projects/communication-job-router.tgz}
+    resolution: {integrity: sha512-OBDRudn5gm5DtRCtSrKzlg3sI4ghfYAuLNkVUWZqcSXTg5XTEHjAkwrwhwh67SYP5E32pPlK3Er9BmCu7vvRow==, tarball: file:projects/communication-job-router.tgz}
     name: '@rush-temp/communication-job-router'
     version: 0.0.0
     dependencies:
@@ -19438,6 +19440,12 @@ packages:
       - debug
       - supports-color
       - utf-8-validate
+    dev: false
+
+  file:projects/test-server.tgz:
+    resolution: {integrity: sha512-xEK0pAUmPOYdOm1TvRF7XFTaTiF7vC1llQnaoomADfNK4BcBqRgiM51PeIHxYpnjqS65Npr8twckL42v6y/C9g==, tarball: file:projects/test-server.tgz}
+    name: '@rush-temp/test-server'
+    version: 0.0.0
     dev: false
 
   file:projects/test-utils-perf.tgz:
