@@ -277,6 +277,9 @@
     },
     {
       "path": "sdk/core/core-http-compat"
+    },
+    {
+      "path": "sdk/notificationhubs/notification-hubs"
     }
   ],
   "settings": {
