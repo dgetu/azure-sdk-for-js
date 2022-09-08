@@ -1,0 +1,13 @@
+{
+  "extends": "../../../tsconfig.package",
+  "compilerOptions": {
+    "outDir": "./dist-esm/src",
+    "declarationDir": "./types/src",
+    "lib": ["dom", "esnext"],
+    "paths": {
+      "@azure/test-server": ["./src/index"]
+    }
+  },
+  "target": "esnext",
+  "include": ["src/**/*.ts", "test/**/*.ts", "samples-dev/**/*.ts"]
+}

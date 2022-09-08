@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 import { assert } from "@azure/test-utils";
-import { test_server } from "@azure/test-server";
 import { Context } from "mocha";
 import { ConfigurationClient } from "../../src";
 import { Recorder, assertEnvironmentVariable } from "@azure-tools/test-recorder";
