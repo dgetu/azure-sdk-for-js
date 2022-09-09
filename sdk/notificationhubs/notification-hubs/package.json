@@ -68,7 +68,7 @@
     "test:browser": "npm run clean && npm run build:test && npm run integration-test:browser",
     "test:node": "npm run clean && tsc -p . && npm run integration-test:node",
     "test": "npm run clean && tsc -p . && npm run unit-test:node && dev-tool run bundle && npm run unit-test:browser && npm run integration-test",
-    "unit-test:browser": "echo skipped",
+    "unit-test:browser": "dev-tool run test:browser",
     "unit-test:node": "mocha -r ts-node/register --timeout 1200000 --full-trace --exclude \"dist-esm/test/**/browser/*.spec.js\" \"dist-esm/test/internal/unit/{,!(browser)/**/}*.spec.js\" \"dist-esm/test/public/unit/{,!(browser)/**/}*.spec.js\"",
     "unit-test": "npm run unit-test:node && npm run unit-test:browser"
   },
