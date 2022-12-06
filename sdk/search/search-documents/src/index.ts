@@ -111,16 +111,25 @@ export {
   SearchIndexStatistics,
   SearchServiceStatistics,
   SearchIndexer,
+  //@beta
   LexicalNormalizer,
+  //@beta
   SearchIndexerDataIdentity,
   ResetDocumentsOptions,
   ResetSkillsOptions,
+  //@beta
   SearchIndexAlias,
+  //@beta
   CreateAliasOptions,
+  //@beta
   CreateOrUpdateAliasOptions,
+  //@beta
   DeleteAliasOptions,
+  //@beta
   GetAliasOptions,
+  //@beta
   ListAliasesOptions,
+  //@beta
   AliasIterator,
 } from "./serviceModels";
 export { default as GeographyPoint } from "./geographyPoint";
@@ -137,20 +146,35 @@ export {
   QueryType,
   SearchMode,
   ScoringStatistics,
+  //@beta
   Answers,
+  //@beta
   KnownAnswers,
+  //@beta
   QueryLanguage,
+  //@beta
   KnownQueryLanguage,
+  //@beta
   Speller,
+  //@beta
   KnownSpeller,
+  //@beta
   CaptionResult,
+  //@beta
   AnswerResult,
+  //@beta
   Captions,
+  //@beta
   QueryAnswerType,
+  //@beta
   QueryCaptionType,
+  //@beta
   QuerySpellerType,
+  //@beta
   KnownQuerySpellerType,
+  //@beta
   KnownQueryAnswerType,
+  //@beta
   KnownQueryCaptionType,
 } from "./generated/data/models";
 export {
@@ -229,12 +253,17 @@ export {
   CustomEntity,
   CustomEntityAlias,
   SplitSkill,
+  //@beta
   PIIDetectionSkill,
+  //@beta
   EntityRecognitionSkillV3,
+  //@beta
   EntityLinkingSkill,
+  //@beta
   SentimentSkillV3,
   TextTranslationSkill,
   WebApiSkill,
+  //@beta
   AzureMachineLearningSkill,
   SentimentSkillLanguage,
   KnownSentimentSkillLanguage,
@@ -279,7 +308,9 @@ export {
   SoftDeleteColumnDeletionDetectionPolicy,
   SqlIntegratedChangeTrackingPolicy,
   HighWaterMarkChangeDetectionPolicy,
+  //@beta
   SearchIndexerDataUserAssignedIdentity,
+  //@beta
   SearchIndexerDataNoneIdentity,
   ServiceCounters,
   ServiceLimits,
@@ -308,13 +339,17 @@ export {
   LexicalAnalyzer as BaseLexicalAnalyzer,
   CharFilter as BaseCharFilter,
   DataDeletionDetectionPolicy as BaseDataDeletionDetectionPolicy,
+  //@beta
   LexicalNormalizerName,
+  //@beta
   KnownLexicalNormalizerName,
+  //@beta
   CustomNormalizer,
   TokenFilterName,
   KnownTokenFilterName,
   CharFilterName,
   KnownCharFilterName,
+  //@beta
   LexicalNormalizer as BaseLexicalNormalizer,
   SearchIndexerKnowledgeStore,
   SearchIndexerKnowledgeStoreProjection,
@@ -323,21 +358,37 @@ export {
   SearchIndexerKnowledgeStoreProjectionSelector,
   SearchIndexerKnowledgeStoreObjectProjectionSelector,
   SearchIndexerKnowledgeStoreTableProjectionSelector,
+  //@beta
   PIIDetectionSkillMaskingMode,
+  //@beta
   KnownPIIDetectionSkillMaskingMode,
+  //@beta
   LineEnding,
+  //@beta
   KnownLineEnding,
+  //@beta
   SearchIndexerDataIdentity as BaseSearchIndexerDataIdentity,
+  //@beta
   SearchIndexerCache,
+  //@beta
   IndexerState,
+  //@beta
   IndexerExecutionStatusDetail,
+  //@beta
   KnownIndexerExecutionStatusDetail,
+  //@beta
   IndexingMode,
+  //@beta
   KnownIndexingMode,
+  //@beta
   SemanticSettings,
+  //@beta
   SemanticConfiguration,
+  //@beta
   PrioritizedFields,
+  //@beta
   SemanticField,
+  //@beta
   SearchAlias,
 } from "./generated/service/models";
 export { AzureKeyCredential } from "@azure/core-auth";

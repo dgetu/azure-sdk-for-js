@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 import {
+  //@beta
   AzureMachineLearningSkill,
   BM25Similarity,
   ClassicSimilarity,
@@ -14,8 +15,10 @@ import {
   DataDeletionDetectionPolicyUnion,
   DefaultCognitiveServicesAccount,
   DocumentExtractionSkill,
+  //@beta
   EntityLinkingSkill,
   EntityRecognitionSkill,
+  //@beta
   EntityRecognitionSkillV3,
   PatternAnalyzer as GeneratedPatternAnalyzer,
   SearchField as GeneratedSearchField,
@@ -31,19 +34,25 @@ import {
   LanguageDetectionSkill,
   LexicalAnalyzerName,
   LexicalAnalyzerUnion,
+  //@beta
   LexicalNormalizerName,
   LexicalTokenizerUnion,
   LuceneStandardAnalyzer,
   MergeSkill,
   OcrSkill,
+  //@beta
   PIIDetectionSkill,
   PatternTokenizer,
   RegexFlags,
+  //@beta
   SearchIndexerDataIdentityUnion,
+  //@beta
   SearchIndexerDataNoneIdentity,
+  //@beta
   SearchIndexerDataUserAssignedIdentity,
   SearchIndexerSkillUnion,
   SentimentSkill,
+  //@beta
   SentimentSkillV3,
   ShaperSkill,
   SimilarityUnion,
@@ -61,6 +70,7 @@ import {
   DataChangeDetectionPolicy,
   DataDeletionDetectionPolicy,
   LexicalAnalyzer,
+  //@beta
   LexicalNormalizer,
   LexicalTokenizer,
   PatternAnalyzer,
@@ -68,6 +78,7 @@ import {
   SearchField,
   SearchIndex,
   SearchIndexer,
+  //@beta
   SearchIndexerDataIdentity,
   SearchIndexerDataSourceConnection,
   SearchIndexerSkill,
@@ -123,15 +134,19 @@ export function convertSkillsToPublic(skills: SearchIndexerSkillUnion[]): Search
       case "#Microsoft.Skills.Text.SplitSkill":
         result.push(skill as SplitSkill);
         break;
+      //@beta
       case "#Microsoft.Skills.Text.PIIDetectionSkill":
         result.push(skill as PIIDetectionSkill);
         break;
+      //@beta
       case "#Microsoft.Skills.Text.V3.EntityRecognitionSkill":
         result.push(skill as EntityRecognitionSkillV3);
         break;
+      //@beta
       case "#Microsoft.Skills.Text.V3.EntityLinkingSkill":
         result.push(skill as EntityLinkingSkill);
         break;
+      //@beta
       case "#Microsoft.Skills.Text.V3.SentimentSkill":
         result.push(skill as SentimentSkillV3);
         break;
@@ -147,6 +162,7 @@ export function convertSkillsToPublic(skills: SearchIndexerSkillUnion[]): Search
       case "#Microsoft.Skills.Util.DocumentExtractionSkill":
         result.push(skill as DocumentExtractionSkill);
         break;
+      //@beta
       case "#Microsoft.Skills.Custom.AmlSkill":
         result.push(skill as AzureMachineLearningSkill);
         break;
@@ -274,10 +290,17 @@ export function convertFieldsToPublic(fields: GeneratedSearchField[]): SearchFie
         fields: convertFieldsToPublic(field.fields!),
       };
     } else {
-      const analyzerName: LexicalAnalyzerName | undefined = field.analyzer;
-      const searchAnalyzerName: LexicalAnalyzerName | undefined = field.searchAnalyzer;
-      const indexAnalyzerName: LexicalAnalyzerName | undefined = field.indexAnalyzer;
+      //@public
+      //@beta non-null
+      const analyzerName: LexicalAnalyzerName | null | undefined = field.analyzer;
+      //@public
+      //@beta non-null
+      const searchAnalyzerName: LexicalAnalyzerName | null | undefined = field.searchAnalyzer;
+      //@public
+      //@beta non-null
+      const indexAnalyzerName: LexicalAnalyzerName | null | undefined = field.indexAnalyzer;
       const synonymMapNames: string[] | undefined = field.synonymMaps;
+      //@beta
       const normalizerName: LexicalNormalizerName | undefined = field.normalizer;
 
       const { retrievable, ...restField } = field;
@@ -290,6 +313,7 @@ export function convertFieldsToPublic(fields: GeneratedSearchField[]): SearchFie
         searchAnalyzerName,
         indexAnalyzerName,
         synonymMapNames,
+        //@beta
         normalizerName,
       } as SimpleField;
     }
@@ -320,6 +344,7 @@ export function convertFieldsToGenerated(fields: SearchField[]): GeneratedSearch
         searchAnalyzer: field.searchAnalyzerName,
         indexAnalyzer: field.indexAnalyzerName,
         synonymMaps: field.synonymMapNames,
+        //@beta
         normalizer: field.normalizerName,
       };
     }
@@ -395,8 +420,12 @@ export function convertSimilarityToPublic(
 }
 
 export function convertEncryptionKeyToPublic(
-  encryptionKey?: GeneratedSearchResourceEncryptionKey
-): SearchResourceEncryptionKey | undefined {
+  //@public
+  //@beta non-null
+  encryptionKey?: GeneratedSearchResourceEncryptionKey | null
+): //ga
+//@beta non-null
+SearchResourceEncryptionKey | null | undefined {
   if (!encryptionKey) {
     return encryptionKey;
   }
@@ -405,6 +434,7 @@ export function convertEncryptionKeyToPublic(
     keyName: encryptionKey.keyName,
     keyVersion: encryptionKey.keyVersion,
     vaultUrl: encryptionKey.vaultUri,
+    //@beta
     identity: convertSearchIndexerDataIdentityToPublic(encryptionKey.identity),
   };
 
@@ -417,8 +447,12 @@ export function convertEncryptionKeyToPublic(
 }
 
 export function convertEncryptionKeyToGenerated(
-  encryptionKey?: SearchResourceEncryptionKey
-): GeneratedSearchResourceEncryptionKey | undefined {
+  //@public
+  //@beta non-null
+  encryptionKey?: SearchResourceEncryptionKey | null
+): //@public
+//@beta non-null
+GeneratedSearchResourceEncryptionKey | null | undefined {
   if (!encryptionKey) {
     return encryptionKey;
   }
@@ -427,6 +461,7 @@ export function convertEncryptionKeyToGenerated(
     keyName: encryptionKey.keyName,
     keyVersion: encryptionKey.keyVersion,
     vaultUri: encryptionKey.vaultUrl,
+    //@beta
     identity: encryptionKey.identity,
   };
 
@@ -452,10 +487,12 @@ export function generatedIndexToPublicIndex(generatedIndex: GeneratedSearchIndex
     tokenizers: convertTokenizersToPublic(generatedIndex.tokenizers),
     tokenFilters: generatedIndex.tokenFilters as TokenFilter[],
     charFilters: generatedIndex.charFilters as CharFilter[],
+    //@beta
     normalizers: generatedIndex.normalizers as LexicalNormalizer[],
     scoringProfiles: generatedIndex.scoringProfiles as ScoringProfile[],
     fields: convertFieldsToPublic(generatedIndex.fields),
     similarity: convertSimilarityToPublic(generatedIndex.similarity),
+    //@beta
     semanticSettings: generatedIndex.semanticSettings,
   };
 }
@@ -475,7 +512,7 @@ export function generatedSearchResultToPublicSearchResult<T>(
       captions,
       document: doc,
     };
-    return obj as SearchResult<T>;
+    return obj as unknown as SearchResult<T>;
   });
   return returnValues;
 }
@@ -516,12 +553,14 @@ export function publicIndexToGeneratedIndex(index: SearchIndex): GeneratedSearch
     etag: index.etag,
     tokenFilters: convertTokenFiltersToGenerated(index.tokenFilters),
     charFilters: index.charFilters,
+    //@beta
     normalizers: index.normalizers,
     scoringProfiles: index.scoringProfiles,
     analyzers: convertAnalyzersToGenerated(index.analyzers),
     tokenizers: convertTokenizersToGenerated(index.tokenizers),
     fields: convertFieldsToGenerated(index.fields),
     similarity: convertSimilarityToGenerated(index.similarity),
+    //@beta
     semanticSettings: index.semanticSettings,
   };
 }
@@ -616,6 +655,7 @@ export function publicDataSourceToGeneratedDataSource(
       connectionString: dataSource.connectionString,
     },
     container: dataSource.container,
+    //@beta
     identity: dataSource.identity,
     etag: dataSource.etag,
     dataChangeDetectionPolicy: dataSource.dataChangeDetectionPolicy,
@@ -633,6 +673,7 @@ export function generatedDataSourceToPublicDataSource(
     type: dataSource.type,
     connectionString: dataSource.credentials.connectionString,
     container: dataSource.container,
+    //@beta
     identity: convertSearchIndexerDataIdentityToPublic(dataSource.identity),
     etag: dataSource.etag,
     dataChangeDetectionPolicy: convertDataChangeDetectionPolicyToPublic(
@@ -645,6 +686,7 @@ export function generatedDataSourceToPublicDataSource(
   };
 }
 
+//@beta
 export function convertSearchIndexerDataIdentityToPublic(
   searchIndexerDataIdentity?: SearchIndexerDataIdentityUnion
 ): SearchIndexerDataIdentity | undefined {
@@ -660,8 +702,12 @@ export function convertSearchIndexerDataIdentityToPublic(
 }
 
 export function convertDataChangeDetectionPolicyToPublic(
-  dataChangeDetectionPolicy?: DataChangeDetectionPolicyUnion
-): DataChangeDetectionPolicy | undefined {
+  //@public
+  //@beta non-null
+  dataChangeDetectionPolicy?: DataChangeDetectionPolicyUnion | null
+): //@public
+//@beta non-null
+DataChangeDetectionPolicy | null | undefined {
   if (!dataChangeDetectionPolicy) {
     return dataChangeDetectionPolicy;
   }
@@ -677,8 +723,12 @@ export function convertDataChangeDetectionPolicyToPublic(
 }
 
 export function convertDataDeletionDetectionPolicyToPublic(
-  dataDeletionDetectionPolicy?: DataDeletionDetectionPolicyUnion
-): DataDeletionDetectionPolicy | undefined {
+  //@public
+  //@beta non-null
+  dataDeletionDetectionPolicy?: DataDeletionDetectionPolicyUnion | null
+): //@public
+//@beta non-null
+DataDeletionDetectionPolicy | null | undefined {
   if (!dataDeletionDetectionPolicy) {
     return dataDeletionDetectionPolicy;
   }

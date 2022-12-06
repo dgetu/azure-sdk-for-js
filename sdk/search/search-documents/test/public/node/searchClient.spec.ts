@@ -9,9 +9,12 @@ import { Recorder } from "@azure-tools/test-recorder";
 import { createClients } from "../utils/recordedClient";
 import {
   AutocompleteResult,
+  // @beta
   AzureKeyCredential,
   IndexDocumentsBatch,
+  // @beta
   KnownQueryLanguage,
+  //@beta
   KnownSpeller,
   SearchClient,
   SearchIndexClient,
@@ -260,6 +263,8 @@ versionsToTest(serviceVersions, {}, (serviceVersion, onVersions) => {
     // Fails in CI because the CI search service was created on or before 2019
     // which does not have search 'speller' feature. Will resolve the
     // resource issue and then add this test back.
+    //
+    //@beta
     it.skip("search with speller", async function () {
       const searchResults = await searchClient.search("budjet", {
         skip: 0,
@@ -274,6 +279,8 @@ versionsToTest(serviceVersions, {}, (serviceVersion, onVersions) => {
     // Currently semantic search is available only with
     // certain subscriptions and could not be tested in CI.
     // So, skipping this test for now.
+    //
+    //@beta
     it.skip("search with semantic ranking", async function () {
       const searchResults = await searchClient.search("luxury", {
         skip: 0,
@@ -287,6 +294,7 @@ versionsToTest(serviceVersions, {}, (serviceVersion, onVersions) => {
   });
 });
 
+//@beta
 versionsToTest(serviceVersions, {}, (serviceVersion, onVersions) => {
   onVersions({ minVer: "2020-06-30" }).describe("SearchClient tests", function (this: Suite) {
     const credential = new AzureKeyCredential("key");

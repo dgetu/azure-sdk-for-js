@@ -4,6 +4,7 @@
 import { OperationOptions } from "@azure/core-client";
 import {
   AsciiFoldingTokenFilter,
+  //@beta
   AzureMachineLearningSkill,
   BM25Similarity,
   CjkBigramTokenFilter,
@@ -14,6 +15,7 @@ import {
   ConditionalSkill,
   CorsOptions,
   CustomEntityLookupSkill,
+  //@beta
   CustomNormalizer,
   DefaultCognitiveServicesAccount,
   DictionaryDecompounderTokenFilter,
@@ -22,8 +24,10 @@ import {
   EdgeNGramTokenFilterSide,
   EdgeNGramTokenizer,
   ElisionTokenFilter,
+  //@beta
   EntityLinkingSkill,
   EntityRecognitionSkill,
+  //@beta
   EntityRecognitionSkillV3,
   FieldMapping,
   FreshnessScoringFunction,
@@ -37,6 +41,7 @@ import {
   LanguageDetectionSkill,
   LengthTokenFilter,
   LexicalAnalyzerName,
+  //@beta
   LexicalNormalizerName,
   LimitTokenFilter,
   LuceneStandardAnalyzer,
@@ -47,6 +52,7 @@ import {
   MicrosoftLanguageTokenizer,
   NGramTokenizer,
   OcrSkill,
+  //@beta
   PIIDetectionSkill,
   PathHierarchyTokenizerV2 as PathHierarchyTokenizer,
   PatternCaptureTokenFilter,
@@ -55,16 +61,22 @@ import {
   PhoneticTokenFilter,
   RegexFlags,
   ScoringFunctionAggregation,
+  //@beta
   SearchAlias,
+  //@beta
   SearchIndexerCache,
   SearchIndexerDataContainer,
+  //@beta
   SearchIndexerDataNoneIdentity,
   SearchIndexerDataSourceType,
+  //@beta
   SearchIndexerDataUserAssignedIdentity,
   SearchIndexerKnowledgeStore,
   Suggester as SearchSuggester,
+  //@beta
   SemanticSettings,
   SentimentSkill,
+  //@beta
   SentimentSkillV3,
   ServiceCounters,
   ServiceLimits,
@@ -210,11 +222,15 @@ export type CreateSkillsetOptions = OperationOptions;
 
 /**
  * Options for create alias operation.
+ *
+ * @beta
  */
 export type CreateAliasOptions = OperationOptions;
 
 /**
  * Options for create or update alias operation.
+ *
+ * @beta
  */
 export interface CreateOrUpdateAliasOptions extends OperationOptions {
   /**
@@ -225,6 +241,8 @@ export interface CreateOrUpdateAliasOptions extends OperationOptions {
 
 /**
  * Options for delete alias operation.
+ *
+ * @beta
  */
 export interface DeleteAliasOptions extends OperationOptions {
   /**
@@ -235,16 +253,22 @@ export interface DeleteAliasOptions extends OperationOptions {
 
 /**
  * Options for get alias operation.
+ *
+ * @beta
  */
 export type GetAliasOptions = OperationOptions;
 
 /**
  * Options for list aliases operation.
+ *
+ * @beta
  */
 export type ListAliasesOptions = OperationOptions;
 
 /**
  * Search Alias object.
+ *
+ * @beta
  */
 export type SearchIndexAlias = SearchAlias;
 
@@ -310,10 +334,14 @@ export interface CreateOrUpdateSkillsetOptions extends OperationOptions {
   onlyIfUnchanged?: boolean;
   /**
    * Ignores cache reset requirements.
+   *
+   * @beta
    */
   skipIndexerResetRequirementForCache?: boolean;
   /**
    * Disables cache reprocessing change detection.
+   *
+   * @beta
    */
   disableCacheReprocessingChangeDetection?: boolean;
 }
@@ -336,9 +364,15 @@ export interface CreateorUpdateIndexerOptions extends OperationOptions {
    * If set to true, Resource will be updated only if the etag matches.
    */
   onlyIfUnchanged?: boolean;
-  /** Ignores cache reset requirements. */
+  /** Ignores cache reset requirements.
+   *
+   * @beta
+   */
   skipIndexerResetRequirementForCache?: boolean;
-  /** Disables cache reprocessing change detection. */
+  /** Disables cache reprocessing change detection.
+   *
+   * @beta
+   */
   disableCacheReprocessingChangeDetection?: boolean;
 }
 
@@ -352,6 +386,8 @@ export interface CreateorUpdateDataSourceConnectionOptions extends OperationOpti
   onlyIfUnchanged?: boolean;
   /**
    * Ignores cache reset requirements.
+   *
+   * @beta
    */
   skipIndexerResetRequirementForCache?: boolean;
 }
@@ -430,6 +466,8 @@ export interface AnalyzeRequest {
   tokenizerName?: string;
   /**
    * The name of the normalizer to use to normalize the given text.
+   *
+   * @beta
    */
   normalizerName?: LexicalNormalizerName;
   /**
@@ -548,14 +586,20 @@ export type SearchIndexerSkill =
   | EntityRecognitionSkill
   | SentimentSkill
   | SplitSkill
+  //@beta
   | PIIDetectionSkill
+  //@beta
   | EntityRecognitionSkillV3
+  //@beta
   | EntityLinkingSkill
+  //@beta
   | SentimentSkillV3
   | CustomEntityLookupSkill
   | TextTranslationSkill
   | DocumentExtractionSkill
+  //@beta
   | WebApiSkill
+  //@beta
   | AzureMachineLearningSkill;
 
 /**
@@ -758,6 +802,8 @@ export type CharFilter = MappingCharFilter | PatternReplaceCharFilter;
 
 /**
  * Contains the possible cases for LexicalNormalizer.
+ *
+ * @beta
  */
 export type LexicalNormalizer = CustomNormalizer;
 
@@ -910,6 +956,8 @@ export interface SimpleField {
   synonymMapNames?: string[];
   /**
    * The name of the normalizer used at indexing time for the field.
+   *
+   * @beta
    */
   normalizerName?: LexicalNormalizerName;
 }
@@ -960,8 +1008,10 @@ export interface SynonymMap {
    * rotate your encryption key; Your data will be unaffected. Encryption with customer-managed
    * keys is not available for free search services, and is only available for paid services
    * created on or after January 1, 2019.
+   *
+   * @beta non-null
    */
-  encryptionKey?: SearchResourceEncryptionKey;
+  encryptionKey?: SearchResourceEncryptionKey | null;
   /**
    * The ETag of the synonym map.
    */
@@ -980,6 +1030,8 @@ export type IndexIterator = PagedAsyncIterableIterator<SearchIndex, SearchIndex[
  * An iterator for listing the aliases that exist in the Search service. Will make requests
  * as needed during iteration. Use .byPage() to make one request to the server
  * per iteration.
+ *
+ * @beta
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type AliasIterator = PagedAsyncIterableIterator<SearchIndexAlias, SearchIndexAlias[], {}>;
@@ -1017,8 +1069,10 @@ export interface SearchIndex {
   defaultScoringProfile?: string;
   /**
    * Options to control Cross-Origin Resource Sharing (CORS) for the index.
+   *
+   * @beta non-null
    */
-  corsOptions?: CorsOptions;
+  corsOptions?: CorsOptions | null;
   /**
    * The suggesters for the index.
    */
@@ -1041,6 +1095,8 @@ export interface SearchIndex {
   charFilters?: CharFilter[];
   /**
    * The normalizers for the index.
+   *
+   * @beta
    */
   normalizers?: LexicalNormalizer[];
   /**
@@ -1052,8 +1108,10 @@ export interface SearchIndex {
    * rotate your encryption key; Your data will be unaffected. Encryption with customer-managed
    * keys is not available for free search services, and is only available for paid services
    * created on or after January 1, 2019.
+   *
+   * @beta non-null
    */
-  encryptionKey?: SearchResourceEncryptionKey;
+  encryptionKey?: SearchResourceEncryptionKey | null;
   /**
    * The type of similarity algorithm to be used when scoring and ranking the documents matching a
    * search query. The similarity algorithm can only be defined at index creation time and cannot
@@ -1062,6 +1120,8 @@ export interface SearchIndex {
   similarity?: SimilarityAlgorithm;
   /**
    * Defines parameters for a search index that influence semantic capabilities.
+   *
+   * @beta
    */
   semanticSettings?: SemanticSettings;
   /**
@@ -1096,12 +1156,16 @@ export interface SearchIndexer {
   targetIndexName: string;
   /**
    * The schedule for this indexer.
+   *
+   * @beta non-null
    */
-  schedule?: IndexingSchedule;
+  schedule?: IndexingSchedule | null;
   /**
    * Parameters for indexer execution.
+   *
+   * @beta non-null
    */
-  parameters?: IndexingParameters;
+  parameters?: IndexingParameters | null;
   /**
    * Defines mappings between fields in the data source and corresponding target fields in the
    * index.
@@ -1113,8 +1177,10 @@ export interface SearchIndexer {
   outputFieldMappings?: FieldMapping[];
   /**
    * A value indicating whether the indexer is disabled. Default is false. Default value: false.
+   *
+   * @beta non-null
    */
-  isDisabled?: boolean;
+  isDisabled?: boolean | null;
   /**
    * The ETag of the indexer.
    */
@@ -1129,11 +1195,15 @@ export interface SearchIndexer {
    * Your indexer definition (and indexer execution status) will be unaffected. Encryption with
    * customer-managed keys is not available for free search services, and is only available for
    * paid services created on or after January 1, 2019.
+   *
+   * @beta non-null
    */
-  encryptionKey?: SearchResourceEncryptionKey;
+  encryptionKey?: SearchResourceEncryptionKey | null;
   /**
    * Adds caching to an enrichment pipeline to allow for incremental modification steps without
    * having to rebuild the index every time.
+   *
+   * @beta
    */
   cache?: SearchIndexerCache;
 }
@@ -1173,6 +1243,8 @@ export interface SearchResourceEncryptionKey {
    * credentials property is null, the system-assigned managed identity is used. On update to the
    * resource, if the explicit identity is unspecified, it remains unchanged. If "none" is specified,
    * the value of this property is cleared.
+   *
+   * @beta
    */
   identity?: SearchIndexerDataIdentity;
 }
@@ -1214,8 +1286,10 @@ export interface SearchIndexerSkillset {
    * change this property as needed if you want to rotate your encryption key; Your skillset
    * definition will be unaffected. Encryption with customer-managed keys is not available for free
    * search services, and is only available for paid services created on or after January 1, 2019.
+   *
+   * @beta
    */
-  encryptionKey?: SearchResourceEncryptionKey;
+  encryptionKey?: SearchResourceEncryptionKey | null;
 }
 
 /**
@@ -1898,6 +1972,8 @@ export type DataChangeDetectionPolicy =
 
 /**
  * Contains the possible cases for SearchIndexerDataIdentity.
+ *
+ * @beta
  */
 export type SearchIndexerDataIdentity =
   | SearchIndexerDataNoneIdentity
@@ -1937,16 +2013,22 @@ export interface SearchIndexerDataSourceConnection {
    * An explicit managed identity to use for this datasource. If not specified and the connection
    * string is a managed identity, the system-assigned managed identity is used. If not specified,
    * the value remains unchanged. If "none" is specified, the value of this property is cleared.
+   *
+   * @beta
    */
   identity?: SearchIndexerDataIdentity;
   /**
    * The data change detection policy for the datasource.
+   *
+   * @beta non-null
    */
-  dataChangeDetectionPolicy?: DataChangeDetectionPolicy;
+  dataChangeDetectionPolicy?: DataChangeDetectionPolicy | null;
   /**
    * The data deletion detection policy for the datasource.
+   *
+   * @beta non-null
    */
-  dataDeletionDetectionPolicy?: DataDeletionDetectionPolicy;
+  dataDeletionDetectionPolicy?: DataDeletionDetectionPolicy | null;
   /**
    * The ETag of the DataSource.
    */
@@ -1961,7 +2043,9 @@ export interface SearchIndexerDataSourceConnection {
    * datasource definition will be unaffected. Encryption with customer-managed keys is not
    * available for free search services, and is only available for paid services created on or
    * after January 1, 2019.
+   *
+   * @beta non-null
    */
-  encryptionKey?: SearchResourceEncryptionKey;
+  encryptionKey?: SearchResourceEncryptionKey | null;
 }
 // END manually modified generated interfaces

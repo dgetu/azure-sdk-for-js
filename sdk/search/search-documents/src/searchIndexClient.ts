@@ -12,17 +12,22 @@ import { SearchServiceClient as GeneratedClient } from "./generated/service/sear
 import { logger } from "./logger";
 import { createSearchApiKeyCredentialPolicy } from "./searchApiKeyCredentialPolicy";
 import {
+  //@beta
   AliasIterator,
   AnalyzeTextOptions,
+  //@beta
   CreateAliasOptions,
   CreateIndexOptions,
+  //@beta
   CreateOrUpdateAliasOptions,
   CreateOrUpdateIndexOptions,
   CreateOrUpdateSynonymMapOptions,
   CreateSynonymMapOptions,
+  //@beta
   DeleteAliasOptions,
   DeleteIndexOptions,
   DeleteSynonymMapOptions,
+  //@beta
   GetAliasOptions,
   GetIndexOptions,
   GetIndexStatisticsOptions,
@@ -30,10 +35,12 @@ import {
   GetSynonymMapsOptions,
   IndexIterator,
   IndexNameIterator,
+  //@beta
   ListAliasesOptions,
   ListIndexesOptions,
   ListSynonymMapsOptions,
   SearchIndex,
+  //@beta
   SearchIndexAlias,
   SearchIndexStatistics,
   SearchServiceStatistics,
@@ -52,12 +59,14 @@ import { KnownSearchAudience } from "./searchAudience";
 export interface SearchIndexClientOptions extends ExtendedCommonClientOptions {
   /**
    * The API version to use when communicating with the service.
-   * @deprecated use {@Link serviceVersion} instead
+   * @beta doc @deprecated use {@Link serviceVersion} instead
    */
   apiVersion?: string;
 
   /**
    * The service version to use when communicating with the service.
+   *
+   * @beta
    */
   serviceVersion?: string;
 
@@ -77,12 +86,14 @@ export interface SearchIndexClientOptions extends ExtendedCommonClientOptions {
 export class SearchIndexClient {
   /**
    * The API version to use when communicating with the service.
+   *
+   * @beta
    */
   public readonly serviceVersion: string = utils.defaultServiceVersion;
 
   /**
    * The API version to use when communicating with the service.
-   * @deprecated use {@Link serviceVersion} instead
+   * @beta doc @deprecated use {@Link serviceVersion} instead
    */
   public readonly apiVersion: string = utils.defaultServiceVersion;
 
@@ -164,10 +175,12 @@ export class SearchIndexClient {
       if (!utils.serviceVersions.includes(options.apiVersion)) {
         throw new Error(`Invalid Api Version: ${options.apiVersion}`);
       }
+      //@beta
       this.serviceVersion = options.apiVersion;
       this.apiVersion = options.apiVersion;
     }
 
+    //@beta
     if (options.serviceVersion) {
       if (!utils.serviceVersions.includes(options.serviceVersion)) {
         throw new Error(`Invalid Service Version: ${options.serviceVersion}`);
@@ -178,6 +191,9 @@ export class SearchIndexClient {
 
     this.client = new GeneratedClient(
       this.endpoint,
+      //@public
+      this.apiVersion,
+      //@beta
       this.serviceVersion,
       internalClientPipelineOptions
     );
@@ -244,6 +260,7 @@ export class SearchIndexClient {
     };
   }
 
+  //@beta
   private async *listAliasesPage(
     options: ListAliasesOptions = {}
   ): AsyncIterableIterator<SearchIndexAlias[]> {
@@ -262,6 +279,7 @@ export class SearchIndexClient {
     }
   }
 
+  //@beta
   private async *listAliasesAll(
     options: ListAliasesOptions = {}
   ): AsyncIterableIterator<SearchIndexAlias> {
@@ -273,6 +291,8 @@ export class SearchIndexClient {
   /**
    * Lists all aliases available for a search service.
    * @param options - The options parameters.
+   *
+   * @beta
    */
   public listAliases(options: ListAliasesOptions = {}): AliasIterator {
     const iter = this.listAliasesAll(options);
@@ -619,6 +639,8 @@ export class SearchIndexClient {
    * Creates a new search alias or updates an alias if it already exists.
    * @param alias - The definition of the alias to create or update.
    * @param options - The options parameters.
+   *
+   * @beta
    */
   public async createOrUpdateAlias(
     alias: SearchIndexAlias,
@@ -648,6 +670,8 @@ export class SearchIndexClient {
    * Creates a new search alias.
    * @param alias - The definition of the alias to create.
    * @param options - The options parameters.
+   *
+   * @beta
    */
   public async createAlias(
     alias: SearchIndexAlias,
@@ -673,6 +697,8 @@ export class SearchIndexClient {
    * recovery option. The mapped index is untouched by this operation.
    * @param alias - Alias/Name name of the alias to delete.
    * @param options - The options parameters.
+   *
+   * @beta
    */
   public async deleteAlias(
     alias: string | SearchIndexAlias,
@@ -703,6 +729,8 @@ export class SearchIndexClient {
    * Retrieves an alias definition.
    * @param aliasName - The name of the alias to retrieve.
    * @param options - The options parameters.
+   *
+   * @beta
    */
   public async getAlias(
     aliasName: string,
@@ -770,6 +798,7 @@ export class SearchIndexClient {
           ...restOptions,
           analyzer: restOptions.analyzerName,
           tokenizer: restOptions.tokenizerName,
+          //@beta
           normalizer: restOptions.normalizerName,
         },
         updatedOptions

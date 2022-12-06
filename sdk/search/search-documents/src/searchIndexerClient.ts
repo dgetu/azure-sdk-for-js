@@ -26,8 +26,10 @@ import {
   ListDataSourceConnectionsOptions,
   ListIndexersOptions,
   ListSkillsetsOptions,
+  //@beta
   ResetDocumentsOptions,
   ResetIndexerOptions,
+  //@beta
   ResetSkillsOptions,
   RunIndexerOptions,
   SearchIndexer,
@@ -46,12 +48,14 @@ import { KnownSearchAudience } from "./searchAudience";
 export interface SearchIndexerClientOptions extends ExtendedCommonClientOptions {
   /**
    * The API version to use when communicating with the service.
-   * @deprecated use {@Link serviceVersion} instead
+   * @beta doc @deprecated use {@Link serviceVersion} instead
    */
   apiVersion?: string;
 
   /**
    * The service version to use when communicating with the service.
+   *
+   * @beta
    */
   serviceVersion?: string;
 
@@ -71,12 +75,14 @@ export interface SearchIndexerClientOptions extends ExtendedCommonClientOptions 
 export class SearchIndexerClient {
   /**
    * The API version to use when communicating with the service.
+   *
+   * @beta
    */
   public readonly serviceVersion: string = utils.defaultServiceVersion;
 
   /**
    * The API version to use when communicating with the service.
-   * @deprecated use {@Link serviceVersion} instead
+   * @beta doc @deprecated use {@Link serviceVersion} instead
    */
   public readonly apiVersion: string = utils.defaultServiceVersion;
 
@@ -146,10 +152,12 @@ export class SearchIndexerClient {
       if (!utils.serviceVersions.includes(options.apiVersion)) {
         throw new Error(`Invalid Api Version: ${options.apiVersion}`);
       }
+      //@beta
       this.serviceVersion = options.apiVersion;
       this.apiVersion = options.apiVersion;
     }
 
+    //@beta
     if (options.serviceVersion) {
       if (!utils.serviceVersions.includes(options.serviceVersion)) {
         throw new Error(`Invalid Service Version: ${options.serviceVersion}`);
@@ -160,6 +168,9 @@ export class SearchIndexerClient {
 
     this.client = new GeneratedClient(
       this.endpoint,
+      //@public
+      this.apiVersion,
+      //@beta
       this.serviceVersion,
       internalClientPipelineOptions
     );
@@ -501,7 +512,9 @@ export class SearchIndexerClient {
         {
           ...updatedOptions,
           ifMatch: etag,
+          //@beta
           skipIndexerResetRequirementForCache: options.skipIndexerResetRequirementForCache,
+          //@beta
           disableCacheReprocessingChangeDetection: options.disableCacheReprocessingChangeDetection,
         }
       );
@@ -539,6 +552,7 @@ export class SearchIndexerClient {
         {
           ...updatedOptions,
           ifMatch: etag,
+          //@beta
           skipIndexerResetRequirementForCache: options.skipIndexerResetRequirementForCache,
         }
       );
@@ -576,7 +590,9 @@ export class SearchIndexerClient {
         {
           ...updatedOptions,
           ifMatch: etag,
+          //@beta
           skipIndexerResetRequirementForCache: options.skipIndexerResetRequirementForCache,
+          //@beta
           disableCacheReprocessingChangeDetection: options.disableCacheReprocessingChangeDetection,
         }
       );
@@ -767,6 +783,8 @@ export class SearchIndexerClient {
    * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
    * @param indexerName - The name of the indexer to reset documents for.
    * @param options - Additional optional arguments.
+   *
+   * @beta
    */
   public async resetDocuments(
     indexerName: string,
@@ -797,6 +815,8 @@ export class SearchIndexerClient {
    * @param skillsetName - The name of the skillset to reset.
    * @param skillNames - The names of skills to reset.
    * @param options - The options parameters.
+   *
+   * @beta
    */
   public async resetSkills(skillsetName: string, options: ResetSkillsOptions = {}): Promise<void> {
     const { span, updatedOptions } = createSpan("SearchIndexerClient-resetSkills", options);

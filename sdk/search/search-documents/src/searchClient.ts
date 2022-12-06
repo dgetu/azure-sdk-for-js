@@ -51,14 +51,8 @@ import { KnownSearchAudience } from "./searchAudience";
 export interface SearchClientOptions extends ExtendedCommonClientOptions {
   /**
    * The API version to use when communicating with the service.
-   * @deprecated use {@Link serviceVersion} instead
    */
   apiVersion?: string;
-
-  /**
-   * The service version to use when communicating with the service.
-   */
-  serviceVersion?: string;
 
   /**
    * The Audience to use for authentication with Azure Active Directory (AAD). The
@@ -78,13 +72,7 @@ export class SearchClient<T> implements IndexDocumentsClient<T> {
   /// the ContinuationToken logic will need to be updated below.
 
   /**
-   *  The service version to use when communicating with the service.
-   */
-  public readonly serviceVersion: string = utils.defaultServiceVersion;
-
-  /**
    * The API version to use when communicating with the service.
-   * @deprecated use {@Link serviceVersion} instead
    */
   public readonly apiVersion: string = utils.defaultServiceVersion;
 
@@ -163,22 +151,13 @@ export class SearchClient<T> implements IndexDocumentsClient<T> {
       if (!utils.serviceVersions.includes(options.apiVersion)) {
         throw new Error(`Invalid Api Version: ${options.apiVersion}`);
       }
-      this.serviceVersion = options.apiVersion;
       this.apiVersion = options.apiVersion;
-    }
-
-    if (options.serviceVersion) {
-      if (!utils.serviceVersions.includes(options.serviceVersion)) {
-        throw new Error(`Invalid Service Version: ${options.serviceVersion}`);
-      }
-      this.serviceVersion = options.serviceVersion;
-      this.apiVersion = options.serviceVersion;
     }
 
     this.client = new GeneratedClient(
       this.endpoint,
       this.indexName,
-      this.serviceVersion,
+      this.apiVersion,
       internalClientPipelineOptions
     );
 
@@ -300,7 +279,7 @@ export class SearchClient<T> implements IndexDocumentsClient<T> {
         updatedOptions
       );
 
-      const { results, count, coverage, facets, answers, nextLink } = result;
+      const { results, count, coverage, facets, nextLink } = result;
 
       const modifiedResults = utils.generatedSearchResultToPublicSearchResult<T>(results);
 
@@ -309,7 +288,6 @@ export class SearchClient<T> implements IndexDocumentsClient<T> {
         count,
         coverage,
         facets,
-        answers,
         continuationToken: this.encodeContinuationToken(nextLink, result.nextPageParameters),
       };
 
@@ -402,13 +380,12 @@ export class SearchClient<T> implements IndexDocumentsClient<T> {
     try {
       const pageResult = await this.searchDocuments(searchText, updatedOptions);
 
-      const { count, coverage, facets, answers } = pageResult;
+      const { count, coverage, facets } = pageResult;
 
       return {
         count,
         coverage,
         facets,
-        answers,
         results: this.listSearchResults(pageResult, searchText, updatedOptions),
       };
     } catch (e: any) {

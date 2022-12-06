@@ -3,20 +3,29 @@
 
 import { OperationOptions } from "@azure/core-client";
 import {
+  //@beta
   AnswerResult,
+  //@beta
   Answers,
   AutocompleteMode,
+  //@beta
   CaptionResult,
+  //@beta
   Captions,
   FacetResult,
   IndexActionType,
+  //@beta
   QueryAnswerType,
+  //@beta
   QueryCaptionType,
+  //@beta
   QueryLanguage,
+  //@beta
   QuerySpellerType,
   QueryType,
   ScoringStatistics,
   SearchMode,
+  //@beta
   Speller,
 } from "./generated/data/models";
 import { PagedAsyncIterableIterator } from "@azure/core-paging";
@@ -250,6 +259,8 @@ export interface SearchRequest {
   /**
    * The name of a semantic configuration that will be used when processing documents for queries of
    * type semantic.
+   *
+   * @beta
    */
   semanticConfiguration?: string;
   /**
@@ -269,15 +280,21 @@ export interface SearchRequest {
   searchMode?: SearchMode;
   /**
    * A value that specifies the language of the search query.
+   *
+   * @beta
    */
   queryLanguage?: QueryLanguage;
   /**
    * A value that specified the type of the speller to use to spell-correct individual search
    * query terms.
+   *
+   * @beta
    */
   speller?: QuerySpellerType;
   /**
    * A value that specifies whether answers should be returned as part of the search response.
+   *
+   * @beta
    */
   answers?: QueryAnswerType;
   /**
@@ -300,10 +317,14 @@ export interface SearchRequest {
   top?: number;
   /**
    * A value that specifies whether captions should be returned as part of the search response.
+   *
+   * @beta
    */
   captions?: QueryCaptionType;
   /**
    * The comma-separated list of field names used for semantic search.
+   *
+   * @beta
    */
   semanticFields?: string;
 }
@@ -382,10 +403,14 @@ export interface SearchRequestOptions<Fields> {
   searchFields?: Fields[];
   /**
    * The language of the query.
+   *
+   * @beta
    */
   queryLanguage?: QueryLanguage;
   /**
    * Improve search recall by spell-correcting individual search query terms.
+   *
+   * @beta
    */
   speller?: Speller;
   /**
@@ -393,6 +418,8 @@ export interface SearchRequestOptions<Fields> {
    * extracted from key passages in the highest ranked documents. The number of answers returned can
    * be configured by appending the pipe character '|' followed by the 'count-\<number of answers\>' option
    * after the answers parameter value, such as 'extractive|count-3'. Default count is 1.
+   *
+   * @beta
    */
   answers?: Answers;
   /**
@@ -437,10 +464,14 @@ export interface SearchRequestOptions<Fields> {
    * extracted from key passages in the highest ranked documents. When Captions is set to 'extractive',
    * highlighting is enabled by default, and can be configured by appending the pipe character '|'
    * followed by the 'highlight-true'/'highlight-false' option, such as 'extractive|highlight-true'. Defaults to 'None'.
+   *
+   * @beta
    */
   captions?: Captions;
   /**
    * The list of field names used for semantic search.
+   *
+   * @beta
    */
   semanticFields?: string[];
 }
@@ -457,6 +488,8 @@ export type SearchResult<T> = {
   /**
    * The relevance score computed by the semantic ranker for the top search results. Search results are sorted by the RerankerScore first and then by the Score. RerankerScore is only returned for queries of type 'semantic'.
    * NOTE: This property will not be serialized. It can only be populated by the server.
+   *
+   * @beta
    */
   readonly rerankerScore?: number;
   /**
@@ -468,6 +501,8 @@ export type SearchResult<T> = {
   /**
    * Captions are the most representative passages from the document relatively to the search query. They are often used as document summary. Captions are only returned for queries of type 'semantic'.
    * NOTE: This property will not be serialized. It can only be populated by the server.
+   *
+   * @beta
    */
   readonly captions?: CaptionResult[];
 
@@ -502,6 +537,8 @@ export interface SearchDocumentsResultBase {
    * The answers query results for the search operation; null if the answers query parameter was
    * not specified or set to 'none'.
    * NOTE: This property will not be serialized. It can only be populated by the server.
+   *
+   * @beta
    */
   readonly answers?: AnswerResult[];
 }
