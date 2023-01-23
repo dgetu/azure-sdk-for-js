@@ -19,6 +19,6 @@
     "resolveJsonModule": true,
     "skipLibCheck": true
   },
-  "exclude": ["test/samples/files/expectations/**/*"],
+  "exclude": ["test/samples/files/expectations/**/*", "test/versioner/**/*.ts"],
   "include": ["./src/**/*.ts", "./test/**/*.ts"]
 }
