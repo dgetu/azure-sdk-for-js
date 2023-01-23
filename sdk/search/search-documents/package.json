@@ -17,6 +17,8 @@
     "check-format": "prettier --list-different --config ../../../.prettierrc.json --ignore-path ../../../.prettierignore \"src/**/*.ts\" \"test/**/*.ts\" \"samples-dev/**/*.ts\" \"*.{js,json}\"",
     "clean": "rimraf dist dist-* temp types *.tgz *.log",
     "extract-api": "tsc -p . && api-extractor run --local",
+    "generate-autorest:beta": "autorest --typescript swagger/beta/Data.md & autorest --typescript swagger/beta/Service.md && wait",
+    "generate-autorest:public": "autorest --typescript swagger/public/Data.md & autorest --typescript swagger/public/Service.md && wait",
     "format": "prettier --write --config ../../../.prettierrc.json --ignore-path ../../../.prettierignore \"src/**/*.ts\" \"test/**/*.ts\" \"samples-dev/**/*.ts\" \"*.{js,json}\"",
     "integration-test:browser": "dev-tool run test:browser",
     "integration-test:node": "dev-tool run test:node-js-input -- --timeout 5000000 'dist-esm/test/**/*.spec.js'",
@@ -29,7 +31,11 @@
     "test": "npm run build:test && npm run unit-test",
     "unit-test:browser": "dev-tool run test:browser",
     "unit-test:node": "dev-tool run test:node-ts-input -- --timeout 1200000 \"test/**/*.spec.ts\" \"test/**/**/*.spec.ts\"",
-    "unit-test": "npm run unit-test:node && npm run unit-test:browser"
+    "unit-test": "npm run unit-test:node && npm run unit-test:browser",
+    "generate:beta": "dev-tool run version -i ./src/**/*.ts -o ./generated -c beta",
+    "generate:public": "dev-tool run version -i ./src/**/*.ts -o ./generated -c public",
+    "prepare:beta": "npm run generate-autorest:beta & npm run generate:beta && wait",
+    "prepare:public": "npm run generate-autorest:public & npm run generate:public && wait"
   },
   "files": [
     "dist/",
