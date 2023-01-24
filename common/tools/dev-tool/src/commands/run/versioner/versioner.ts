@@ -75,21 +75,35 @@ const removeNodes = (sourceFile: SourceFile, channel: Channel, _log: Printer) =>
     node.forEachChild(callback);
   };
   sourceFile.forEachChild(callback);
-  removeRanges.sort(({ pos }) => pos);
-  const mergedRanges: RemoveRange[] = [];
-  for (const range of removeRanges) {
-    if (mergedRanges.length === 0 || mergedRanges[mergedRanges.length - 1].end < range.pos) {
-      mergedRanges.push(range);
-    } else {
-      mergedRanges[mergedRanges.length - 1].end = Math.max(
-        mergedRanges[mergedRanges.length - 1].end,
-        range.end
-      );
+  const mergeRanges = (ranges: RemoveRange[]) => {
+    ranges.sort(({ pos }) => pos);
+    const mergedRanges: RemoveRange[] = [];
+    for (const range of ranges) {
+      if (mergedRanges.length === 0 || mergedRanges[mergedRanges.length - 1].end < range.pos) {
+        mergedRanges.push(range);
+      } else {
+        mergedRanges[mergedRanges.length - 1].end = Math.max(
+          mergedRanges[mergedRanges.length - 1].end,
+          range.end
+        );
+      }
     }
-  }
-  for (const range of mergedRanges.reverse()) {
-    sourceFile.removeText(range.pos, range.end);
-  }
+    return mergedRanges;
+  };
+  const removeTextRanges = (text: string, ranges: RemoveRange[]) => {
+    let i = 0;
+    const substrings = ranges.map((range) => {
+      const substring = text.substring(i, range.pos);
+      i = range.end;
+      return substring;
+    });
+    substrings.push(text.substring(i));
+    return substrings.join("");
+  };
+
+  const fullText = sourceFile.getFullText();
+  const text = removeTextRanges(fullText, mergeRanges(removeRanges));
+  sourceFile.replaceWithText(text);
 };
 
 const nonNullify = (sourceFile: SourceFile, channel: Channel, _log: Printer): void => {
