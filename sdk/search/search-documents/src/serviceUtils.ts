@@ -291,12 +291,15 @@ export function convertFieldsToPublic(fields: GeneratedSearchField[]): SearchFie
       };
     } else {
       //@public
+      //@beta
       //@beta non-null
       const analyzerName: LexicalAnalyzerName | null | undefined = field.analyzer;
       //@public
+      //@beta
       //@beta non-null
       const searchAnalyzerName: LexicalAnalyzerName | null | undefined = field.searchAnalyzer;
       //@public
+      //@beta
       //@beta non-null
       const indexAnalyzerName: LexicalAnalyzerName | null | undefined = field.indexAnalyzer;
       const synonymMapNames: string[] | undefined = field.synonymMaps;
@@ -421,9 +424,10 @@ export function convertSimilarityToPublic(
 
 export function convertEncryptionKeyToPublic(
   //@public
+  //@beta
   //@beta non-null
   encryptionKey?: GeneratedSearchResourceEncryptionKey | null
-): //ga
+): //@public
 //@beta non-null
 SearchResourceEncryptionKey | null | undefined {
   if (!encryptionKey) {
@@ -448,6 +452,7 @@ SearchResourceEncryptionKey | null | undefined {
 
 export function convertEncryptionKeyToGenerated(
   //@public
+  //@beta
   //@beta non-null
   encryptionKey?: SearchResourceEncryptionKey | null
 ): //@public
@@ -703,6 +708,7 @@ export function convertSearchIndexerDataIdentityToPublic(
 
 export function convertDataChangeDetectionPolicyToPublic(
   //@public
+  //@beta
   //@beta non-null
   dataChangeDetectionPolicy?: DataChangeDetectionPolicyUnion | null
 ): //@public
@@ -724,9 +730,11 @@ DataChangeDetectionPolicy | null | undefined {
 
 export function convertDataDeletionDetectionPolicyToPublic(
   //@public
+  //@beta
   //@beta non-null
   dataDeletionDetectionPolicy?: DataDeletionDetectionPolicyUnion | null
 ): //@public
+//@beta
 //@beta non-null
 DataDeletionDetectionPolicy | null | undefined {
   if (!dataDeletionDetectionPolicy) {
