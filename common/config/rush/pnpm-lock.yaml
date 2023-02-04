@@ -8632,6 +8632,10 @@ packages:
       yn: 3.1.1
     dev: false
 
+  /ts-pattern/4.2.1:
+    resolution: {integrity: sha512-lXCmHZb01QOM9HdCLvisCGUH9ATdKPON9UaUvwe007gJAhuSBhRWIAIowys5QqNxEq6odWctfMIdI96vzjnOMQ==}
+    dev: false
+
   /tsconfig-paths/3.14.1:
     resolution: {integrity: sha512-fxDhWnFSLt3VuTwtvJt5fpwxBHg5AdKWMsgcPOOIilyjymcYVZoCQF8fvFRezCNfblEXmi+PcM1eYHeOAgXCOQ==}
     dependencies:
@@ -16681,7 +16685,7 @@ packages:
     dev: false
 
   file:projects/dev-tool.tgz:
-    resolution: {integrity: sha512-rLOMiCeOgeLTtxa8SmgSUwgylS1HXVw9+yQVTjdxSMUzfUBcn/Xd30KTEniRyJYVF2wYG5IKoW2SqT5Htha9/g==, tarball: file:projects/dev-tool.tgz}
+    resolution: {integrity: sha512-6aZqDi2AwjwfmBq0K1meFgI9JZVsoVGCvnUiUBhr4FQyjuDs4dgUhkV9vUvidf2tIQvnc8mg60g44ddcEdgzTQ==, tarball: file:projects/dev-tool.tgz}
     name: '@rush-temp/dev-tool'
     version: 0.0.0
     dependencies:
@@ -16729,6 +16733,7 @@ packages:
       semver: 7.3.8
       ts-morph: 17.0.1
       ts-node: 10.9.1_gjo33tkf7m2dtuw6tmxt3xwf4q
+      ts-pattern: 4.2.1
       tslib: 2.5.0
       typescript: 4.8.4
       yaml: 1.10.2
@@ -18941,7 +18946,7 @@ packages:
     dev: false
 
   file:projects/search-documents.tgz:
-    resolution: {integrity: sha512-vXiTH6smJCeslUMX2G6TWB9t6/7vQWs4VHP+BtVod0w+B+RVqVMv7rSRThElLSen05jCtYFf719BAD/lS6C90g==, tarball: file:projects/search-documents.tgz}
+    resolution: {integrity: sha512-0Ifja1nwvlQxNqmzNyWMB9iFhXZ6uASts/f+5bRqCPtd+LVg+9AcRGDDf7QKIX3FH7HR6Ikv/PGpH/CHAjgXHw==, tarball: file:projects/search-documents.tgz}
     name: '@rush-temp/search-documents'
     version: 0.0.0
     dependencies:

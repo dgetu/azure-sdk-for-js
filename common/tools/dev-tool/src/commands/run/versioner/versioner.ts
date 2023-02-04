@@ -1,7 +1,22 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { Project, ts, Node, CommentRange, JSDocTag, JSDoc, SourceFile } from "ts-morph";
+import {
+  Project,
+  ts,
+  Node,
+  CommentRange,
+  JSDocTag,
+  JSDoc,
+  SourceFile,
+  NewExpression,
+  ForEachDescendantTraversalControl,
+  VariableStatement,
+  WriterFunction,
+  Structures,
+  Structure,
+} from "ts-morph";
+import { match, P } from "ts-pattern";
 import { Printer } from "../../../util/printer";
 
 export type Channel = "public" | "beta" | "alpha";
@@ -46,35 +61,196 @@ const shouldRemoveNode = (directives: Directive[], channel: Channel): boolean =>
   return hasIncludeTag && !matchingIncludeTag;
 };
 
+const removeNodeHandler = (parent: Node<ts.Node> | undefined, node: Node<ts.Node>) => {
+  return match<[ts.SyntaxKind | undefined, ts.SyntaxKind]>([parent?.getKind(), node.getKind()])
+    .when(
+      () => (node as Node<ts.Node> & { remove: () => void }).remove !== undefined,
+      () => {
+        (node as Node<ts.Node> & { remove: () => void }).remove();
+      }
+    )
+    .with([ts.SyntaxKind.SourceFile, ts.SyntaxKind.EndOfFileToken], () => {})
+    .with([ts.SyntaxKind.NewExpression, ts.SyntaxKind.PropertyAccessExpression], (_) => {
+      (parent as NewExpression).removeArgument(node);
+    })
+    .otherwise(() => {
+      throw Error(
+        `Unimplemented remove node handler for ${
+          parent?.getKindName() ?? undefined
+        } and ${node.getKindName()}`
+      );
+    });
+};
+
+const removeDirectiveComment = (node: Node<ts.Node>): Node<ts.Node> => {
+  const removeDirectivePattern = /\s*\/\/[^\r\n\S]*@(?:alpha|beta|public)\s*\n+/;
+  return match(node)
+    .when(
+      (
+        node
+      ): node is typeof node & {
+        getStructure(): Structures;
+      } =>
+        [
+          ts.SyntaxKind.ClassDeclaration,
+          ts.SyntaxKind.ClassStaticBlockDeclaration,
+          ts.SyntaxKind.Constructor,
+          ts.SyntaxKind.GetAccessor,
+          ts.SyntaxKind.MethodDeclaration,
+          ts.SyntaxKind.PropertyDeclaration,
+          ts.SyntaxKind.SetAccessor,
+          ts.SyntaxKind.Decorator,
+          ts.SyntaxKind.JSDoc,
+          ts.SyntaxKind.JSDocTag,
+          ts.SyntaxKind.EnumDeclaration,
+          ts.SyntaxKind.EnumMember,
+          ts.SyntaxKind.PropertyAssignment,
+          ts.SyntaxKind.ShorthandPropertyAssignment,
+          ts.SyntaxKind.SpreadAssignment,
+          ts.SyntaxKind.FunctionDeclaration,
+          ts.SyntaxKind.Parameter,
+          ts.SyntaxKind.CallSignature,
+          ts.SyntaxKind.ConstructSignature,
+          ts.SyntaxKind.IndexSignature,
+          ts.SyntaxKind.InterfaceDeclaration,
+          ts.SyntaxKind.MethodSignature,
+          ts.SyntaxKind.PropertySignature,
+          ts.SyntaxKind.JsxAttribute,
+          ts.SyntaxKind.JsxElement,
+          ts.SyntaxKind.JsxSelfClosingElement,
+          ts.SyntaxKind.JsxSpreadAttribute,
+          ts.SyntaxKind.AssertEntry,
+          ts.SyntaxKind.ExportAssignment,
+          ts.SyntaxKind.ExportDeclaration,
+          ts.SyntaxKind.ExportSpecifier,
+          ts.SyntaxKind.ImportDeclaration,
+          ts.SyntaxKind.ImportSpecifier,
+          ts.SyntaxKind.ModuleDeclaration,
+          ts.SyntaxKind.SourceFile,
+          ts.SyntaxKind.VariableStatement,
+          ts.SyntaxKind.TypeAliasDeclaration,
+          ts.SyntaxKind.TypeParameter,
+          ts.SyntaxKind.VariableDeclaration,
+        ].includes(node.getKind()),
+      (node) => {
+        const structure = { ...node.getStructure() };
+        const leadingTrivia = structure.leadingTrivia;
+        structure.leadingTrivia = match(leadingTrivia)
+          .when(
+            (trivia): trivia is undefined | WriterFunction =>
+              trivia === undefined || typeof trivia === "function",
+            (trivia) => trivia
+          )
+          .with(P.string, (trivia) => trivia.slice(0, trivia.search(removeDirectivePattern)))
+          .with(P.array(P._), (trivia) => {
+            const newTrivia = [];
+            let skip = false;
+            for (const trivium of trivia) {
+              let updatedTrivium = trivium;
+              if (typeof updatedTrivium === "string") {
+                if (skip) {
+                  newTrivia.push("");
+                  continue;
+                }
+                const index = updatedTrivium.search(removeDirectivePattern);
+                if (index >= 0) {
+                  updatedTrivium = updatedTrivium.slice(0, index);
+                  skip = true;
+                }
+              }
+              newTrivia.push(updatedTrivium);
+            }
+            return newTrivia;
+          })
+          .exhaustive();
+        type SetStructure<
+          T extends Node & {
+            getStructure(): Structures;
+          }
+        > = T & {
+          set: (structures: ReturnType<T["getStructure"]>) => T;
+        };
+        (node as SetStructure<typeof node>).set(structure);
+        return node;
+      }
+    )
+    .when(
+      (node): node is VariableStatement => {
+        return Node.isVariableStatement(node) && Node.isSourceFile(node.getParent());
+      },
+      (node) => {
+        const statements = (node.getParent() as SourceFile).getStatementsWithComments().reverse();
+        const index = statements.indexOf(node);
+        const commentStatements = statements.slice(
+          index,
+          statements.findIndex((n) => !Node.isCommentStatement(n), index)
+        );
+        commentStatements.forEach((statement) => statement.remove());
+        return node;
+      }
+    )
+    .when(
+      (node) => node.getKind() === ts.SyntaxKind.EndOfFileToken,
+      () => {
+        return node;
+      }
+    )
+    .when(
+      (node) =>
+        [
+          ts.SyntaxKind.ExpressionStatement,
+          ts.SyntaxKind.IfStatement,
+          ts.SyntaxKind.PropertyAccessExpression,
+          ts.SyntaxKind.CaseClause,
+        ].includes(node.getKind()),
+      () => {
+        const fullText = node.getFullText();
+        const index = fullText.search(removeDirectivePattern);
+        if (index >= 0) {
+          const newNode = node.replaceWithText(
+            fullText.substring(0, index) + fullText.substring(node.getStart() - node.getPos())
+          );
+          return newNode;
+        }
+        return node;
+      }
+    )
+    .otherwise((node) => {
+      throw Error(
+        `Node is not removable: ${node.getKindName()}\n\n${node.getParent()!.getFullText()}`
+      );
+    });
+};
+
 const removeNodes = (sourceFile: SourceFile, channel: Channel, _log: Printer) => {
   type RemoveRange = { pos: number; end: number };
   const removeRanges: RemoveRange[] = [];
-  const callback = (node: Node<ts.Node>): void => {
+  const callback = (node: Node<ts.Node>, traversal: ForEachDescendantTraversalControl): void => {
     const directives = getDirectives(node);
     if (shouldRemoveNode(directives, channel)) {
-      if (!Node.isTextInsertable(sourceFile)) {
-        throw Error("Node marked for removal, but is not removable");
+      try {
+        node = removeDirectiveComment(node);
+        const parent = node.getParent();
+        removeNodeHandler(parent, node);
+      } catch (e) {
+        if (
+          e instanceof Error &&
+          e.message.includes(
+            "The children of the old and new trees were expected to have the same count"
+          )
+        ) {
+          removeRanges.push({
+            pos: node.getPos(),
+            end: node.getEnd(),
+          });
+        } else {
+          throw e;
+        }
       }
-      if (Node.isJSDocable(node)) {
-        node
-          .getJsDocs()
-          .forEach((jsDoc) => removeRanges.push({ pos: jsDoc.getPos(), end: jsDoc.getEnd() }));
-      }
-      const fullText = node.getFullText();
-      // The last newline before the directive itself. Avoids removing unrelated comments above the directive
-      const directiveIndex = Math.min(
-        ...["public", "beta", "alpha"]
-          .map((chan) => fullText.indexOf(`@${chan}`))
-          .filter((i) => i >= 0)
-      );
-      const pos = node.getPos() + fullText.lastIndexOf("\n", directiveIndex);
-      const end = node.getEnd();
-      removeRanges.push({ pos: pos >= 0 ? pos : 0, end });
-      return;
+      traversal.skip();
     }
-    node.forEachChild(callback);
   };
-  sourceFile.forEachChild(callback);
+  sourceFile.forEachDescendant(callback);
   const mergeRanges = (ranges: RemoveRange[]) => {
     ranges.sort(({ pos }) => pos);
     const mergedRanges: RemoveRange[] = [];
@@ -108,13 +284,29 @@ const removeNodes = (sourceFile: SourceFile, channel: Channel, _log: Printer) =>
 
 const nonNullify = (sourceFile: SourceFile, channel: Channel, _log: Printer): void => {
   const removeNull = (node: Node<ts.Node>) => {
-    if (Node.isVariableDeclaration(node)) {
-      const currentType = node.getType();
+    if (Node.isTyped(node)) {
+      const currentType = node.getTypeNodeOrThrow();
       let newType;
-      if (currentType.isNull()) {
-        newType = "never";
+      if (!Node.isUnionTypeNode(currentType)) {
+        if (currentType.getType().isNull()) {
+          newType = "never";
+        } else {
+          throw Error("non-null type should have null type");
+        }
       } else {
-        newType = currentType.getNonNullableType().getText();
+        const newTypes = currentType
+          .getTypeNodes()
+          .filter((typeNode) => {
+            return !typeNode.getType().isNull();
+          })
+          .map((typeNode) => typeNode.compilerNode);
+        const newTypeNode: ts.UnionTypeNode = ts.factory.createUnionTypeNode(newTypes);
+        const printer = ts.createPrinter();
+        newType = printer.printNode(
+          ts.EmitHint.Unspecified,
+          newTypeNode,
+          node.getSourceFile().compilerNode
+        );
       }
       node.setType(newType);
       return;
