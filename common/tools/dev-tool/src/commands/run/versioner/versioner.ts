@@ -14,7 +14,7 @@ import {
   VariableStatement,
   WriterFunction,
   Structures,
-  Structure,
+  TransformTraversalControl,
 } from "ts-morph";
 import { match, P } from "ts-pattern";
 import { Printer } from "../../../util/printer";
@@ -32,10 +32,50 @@ export function generate(
   channel: Channel,
   log: Printer
 ): { relativePath: string; fullText: string }[] {
+  const removeNodesTraversal =
+    (nodesforRemoval: Set<ts.Node>) =>
+    (traversal: TransformTraversalControl): ts.Node => {
+      const children = traversal.currentNode.getChildren();
+      const filteredChildren = children.filter((child) => !nodesforRemoval.has(child));
+      if (children.length === filteredChildren.length) {
+        return traversal.currentNode;
+      }
+      return match(traversal.currentNode)
+        .when(ts.isArrowFunction, () => {
+          const body = filteredChildren.find((node): node is ts.Block | ts.Expression => {
+            return ts.isBlock(node) || (node as ts.Expression)._expressionBrand !== undefined;
+          });
+          if (body === undefined) {
+            throw Error("Arrow function body expected");
+          }
+          return traversal.factory.createArrowFunction(
+            filteredChildren.filter(ts.isModifier),
+            filteredChildren.filter(ts.isTypeParameterDeclaration),
+            filteredChildren.filter(ts.isParameter),
+            filteredChildren.find(ts.isTypeNode),
+            filteredChildren.find((node): node is ts.EqualsGreaterThanToken => {
+              return node.kind === ts.SyntaxKind.EqualsGreaterThanToken;
+            }),
+            body
+          );
+        })
+        .otherwise((node) => {
+          throw Error(`Node not caught ${node.kind}`);
+        });
+    };
   const sourceFiles = project.getSourceFiles();
   const projectRoot = project.getDirectoryOrThrow("./");
   return sourceFiles.map((sourceFile) => {
-    removeNodes(sourceFile, channel, log);
+    const nodesForRemoval: Set<ts.Node> = new Set();
+    sourceFile.forEachDescendant((node, traversal) => {
+      const directives = getDirectives(node);
+      if (shouldRemoveNode(directives, channel)) {
+        nodesForRemoval.add(node.compilerNode);
+        traversal.skip();
+      }
+    });
+    sourceFile = sourceFile.transform(removeNodesTraversal(nodesForRemoval)) as SourceFile;
+    // removeNodes(sourceFile, channel, log);
     nonNullify(sourceFile, channel, log);
     removeJSDocs(sourceFile, channel, log);
     return {
