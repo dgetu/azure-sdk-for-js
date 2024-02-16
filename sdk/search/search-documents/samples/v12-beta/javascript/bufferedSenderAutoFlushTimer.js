@@ -66,7 +66,7 @@ async function main() {
       console.log(response);
     });
 
-    bufferedClient.uploadDocuments([
+    await bufferedClient.uploadDocuments([
       {
         hotelId: "1",
         description:
@@ -102,7 +102,6 @@ async function main() {
   } finally {
     await indexClient.deleteIndex(TEST_INDEX_NAME);
   }
-  await delay(WAIT_TIME);
 }
 
 main();

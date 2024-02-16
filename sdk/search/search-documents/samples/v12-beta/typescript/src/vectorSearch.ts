@@ -25,7 +25,7 @@ const endpoint = process.env.ENDPOINT || "";
 const apiKey = process.env.SEARCH_API_ADMIN_KEY || "";
 const TEST_INDEX_NAME = "example-index-sample-7";
 
-async function main() {
+async function main(): Promise<void> {
   if (!endpoint || !apiKey) {
     console.log("Make sure to set valid values for endpoint and apiKey with proper authorization.");
     return;
@@ -36,7 +36,7 @@ async function main() {
   const searchClient: SearchClient<Hotel> = new SearchClient<Hotel>(
     endpoint,
     TEST_INDEX_NAME,
-    credential
+    credential,
   );
 
   const indexClient: SearchIndexClient = new SearchIndexClient(endpoint, credential);

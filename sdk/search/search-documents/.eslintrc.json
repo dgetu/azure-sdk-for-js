@@ -1,0 +1,8 @@
+{
+  "overrides": [
+    {
+      "files": ["samples*/**.ts"],
+      "rules": { "tsdoc/syntax": "off", "import/no-extraneous-dependencies": "off" }
+    }
+  ]
+}
