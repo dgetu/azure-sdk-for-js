@@ -1,5 +1,5 @@
 {
-  "name": "GitHub Codespaces (Default)",
+  "name": "GitHub Codespaces (Custom)",
   "remoteUser": "codespace",
   "overrideCommand": false,
   "workspaceMount": "source=${localWorkspaceFolder},target=/home/codespace/workspace,type=bind,consistency=cached",
@@ -14,6 +14,11 @@
     "--privileged"
   ],
   "postCreateCommand": "bash .devcontainer/init.sh",
+  "build": {
+    "context": ".",
+    "dockerfile": "./Dockerfile"
+  },
+  "containerUser": "codespace",
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
   "customizations": {
@@ -23,40 +28,133 @@
           "permissions": {
             "contents": "write"
           }
+        },
+        "dgetu/dotfiles": {
+          "permissions": {
+            "contents": "write"
+          }
         }
       }
     },
     "vscode": {
       "settings": {
-        "terminal.integrated.shell.linux": "/bin/bash",
-        "go.useGoProxyToCheckForToolUpdates": false,
-        "go.useLanguageServer": true,
-        "go.gopath": "/go",
-        "go.goroot": "/usr/local/go",
-        "go.toolsGopath": "/go/bin",
-        "python.pythonPath": "/opt/python/latest/bin/python",
-        "python.linting.enabled": true,
-        "python.linting.pylintEnabled": true,
-        "python.formatting.autopep8Path": "/usr/local/py-utils/bin/autopep8",
-        "python.formatting.blackPath": "/usr/local/py-utils/bin/black",
-        "python.formatting.yapfPath": "/usr/local/py-utils/bin/yapf",
-        "python.linting.banditPath": "/usr/local/py-utils/bin/bandit",
-        "python.linting.flake8Path": "/usr/local/py-utils/bin/flake8",
-        "python.linting.mypyPath": "/usr/local/py-utils/bin/mypy",
-        "python.linting.pycodestylePath": "/usr/local/py-utils/bin/pycodestyle",
-        "python.linting.pydocstylePath": "/usr/local/py-utils/bin/pydocstyle",
-        "python.linting.pylintPath": "/usr/local/py-utils/bin/pylint",
-        "lldb.executable": "/usr/bin/lldb",
+        "[fish]": {
+          "editor.defaultFormatter": "bmalehorn.vscode-fish"
+        },
+        "[javascript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[json]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[jsonc]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[python]": {
+          "editor.defaultFormatter": "ms-python.black-formatter"
+        },
+        "[rust]": {
+          "editor.defaultFormatter": "rust-lang.rust-analyzer"
+        },
+        "[shellscript]": {
+          "editor.defaultFormatter": "foxundermoon.shell-format"
+        },
+        "[typescript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "diffEditor.maxComputationTime": 0,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "eslint.format.enable": true,
         "files.watcherExclude": {
           "**/target/**": true
-        }
-      },
-      // Add the IDs of extensions you want installed when the container is created.
-      "extensions": [
-        "GitHub.vscode-pull-request-github",
-        "MS-vsliveshare.vsliveshare",
-        "VisualStudioExptTeam.vscodeintellicode"
-      ]
+        },
+        "gitlens.views.searchAndCompare.files.layout": "tree",
+        "go.useGoProxyToCheckForToolUpdates": false,
+        "go.useLanguageServer": true,
+        "prettier.printWidth": 100,
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": true,
+        "shellcheck.run": "onSave",
+        "terminal.integrated.shell.linux": "/bin/bash"
+      }
     }
-  }
+  },
+  // Add the IDs of extensions you want installed when the container is created.
+  "extensions": [
+    "bmalehorn.vscode-fish",
+    "christian-kohler.npm-intellisense",
+    "dbaeumer.vscode-eslint",
+    "eamodio.gitlens",
+    "esbenp.prettier-vscode",
+    "github.codespaces",
+    "github.copilot-chat",
+    "github.copilot",
+    "GitHub.vscode-pull-request-github",
+    "ms-vscode.powershell",
+    "richie5um2.vscode-sort-json",
+    "streetsidesoftware.code-spell-checker",
+    "timonwong.shellcheck"
+  ],
+  "features": {
+    "./local-features/setup-user": "latest",
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "userGid": "1000",
+      "username": "codespace",
+      "userUid": "1000"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/dotnet:2": {
+      "aspNetCoreRuntimeVersions": "8.0",
+      "dotnetRuntimeVersions": "8.0",
+      "version": "8.0"
+    },
+    "ghcr.io/devcontainers/features/git-lfs:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/git:1": {
+      "ppa": "false",
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "additionalVersions": "3.9.18",
+      "configureJupyterlabAllowOrigin": "*",
+      "installJupyterlab": "true",
+      "useOryxIfAvailable": "false",
+      "version": "3.10.13"
+    },
+    "ghcr.io/devcontainers/features/sshd:1": {
+      "version": "latest"
+    }
+  },
+  "overrideFeatureInstallOrder": [
+    "ghcr.io/devcontainers/features/common-utils",
+    "ghcr.io/devcontainers/features/git",
+    "ghcr.io/devcontainers/features/dotnet",
+    "ghcr.io/devcontainers/features/hugo",
+    "ghcr.io/devcontainers/features/node",
+    "./local-features/nvs",
+    "ghcr.io/devcontainers/features/conda",
+    "./local-features/patch-conda",
+    "ghcr.io/devcontainers/features/python",
+    "./local-features/patch-python",
+    "./local-features/machine-learning-packages",
+    "ghcr.io/devcontainers/features/php",
+    "ghcr.io/devcontainers/features/ruby",
+    "ghcr.io/devcontainers/features/java",
+    "ghcr.io/devcontainers/features/sshd",
+    "ghcr.io/devcontainers/features/git-lfs",
+    "ghcr.io/devcontainers/features/github-cli",
+    "ghcr.io/devcontainers/features/docker-in-docker",
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube",
+    "ghcr.io/devcontainers/features/go",
+    "./local-features/jekyll",
+    "ghcr.io/devcontainers/features/oryx",
+    "./local-features/setup-user"
+  ]
 }

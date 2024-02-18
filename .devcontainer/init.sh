@@ -11,19 +11,21 @@ nvm alias default $(node --version)
 npm install -g @microsoft/rush autorest @typespec/compiler
 rush update
 
-# Install PowerShell. PowerShell is needed for the test proxy asset sync migration scripts,
-# and is also useful for running scripts in eng/common/scripts and eng/common/TestResources.
-# Update the list of packages
-sudo apt-get update
-# Install pre-requisite packages.
-sudo apt-get install -y wget apt-transport-https software-properties-common
-# Download the Microsoft repository GPG keys
-wget -q "https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb"
-# Register the Microsoft repository GPG keys
-sudo dpkg -i packages-microsoft-prod.deb
-# Delete the the Microsoft repository GPG keys file
-rm packages-microsoft-prod.deb
-# Update the list of packages after we added packages.microsoft.com
-sudo apt-get update
-# Install PowerShell
-sudo apt-get install -y powershell
+if [ "$(grep -Ei 'debian|buntu|mint' /etc/*release)" ]; then
+  # Install PowerShell. PowerShell is needed for the test proxy asset sync migration scripts,
+  # and is also useful for running scripts in eng/common/scripts and eng/common/TestResources.
+  # Update the list of packages
+  sudo apt-get update
+  # Install pre-requisite packages.
+  sudo apt-get install -y wget apt-transport-https software-properties-common
+  # Download the Microsoft repository GPG keys
+  wget -q "https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb"
+  # Register the Microsoft repository GPG keys
+  sudo dpkg -i packages-microsoft-prod.deb
+  # Delete the the Microsoft repository GPG keys file
+  rm packages-microsoft-prod.deb
+  # Update the list of packages after we added packages.microsoft.com
+  sudo apt-get update
+  # Install PowerShell
+  sudo apt-get install -y powershell
+fi

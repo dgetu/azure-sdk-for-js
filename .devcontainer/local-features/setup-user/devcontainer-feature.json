@@ -1,0 +1,16 @@
+{
+  "id": "setup-user",
+  "name": "Setup user configs",
+  "containerEnv": {
+    "NODE_ROOT": "/home/codespace/nvm",
+    "PYTHON_ROOT": "/home/codespace/.python",
+    "DOTNET_SKIP_FIRST_TIME_EXPERIENCE": "1",
+    "PYTHONIOENCODING": "UTF-8",
+    "NPM_GLOBAL": "/home/codespace/.npm-global",
+    "PATH": "/home/codespace/.dotnet:/home/codespace/nvm/current/bin:/home/codespace/.python/current/bin:/home/codespace/.local/bin:${PATH}"
+  },
+  "install": {
+    "app": "",
+    "file": "install.sh"
+  }
+}
