@@ -6,20 +6,18 @@ import type {
   SuggestDocumentsResult as GeneratedSuggestDocumentsResult,
 } from "./generated/data/models";
 import type {
-  AIServicesAccountIdentity as GeneratedAIServicesAccountIdentity,
-  AIServicesAccountKey as GeneratedAIServicesAccountKey,
   AIServicesVisionVectorizer as GeneratedAIServicesVisionVectorizer,
   AMLParameters as GeneratedAMLParameters,
   AMLVectorizer as GeneratedAMLVectorizer,
   AzureOpenAIVectorizer as GeneratedAzureOpenAIVectorizer,
   BM25Similarity,
   ClassicSimilarity,
-  CognitiveServicesAccountKey as GeneratedCognitiveServicesAccountKey,
+  CognitiveServicesAccountKey,
   CognitiveServicesAccountUnion,
   CustomAnalyzer as BaseCustomAnalyzer,
   DataChangeDetectionPolicyUnion,
   DataDeletionDetectionPolicyUnion,
-  DefaultCognitiveServicesAccount as GeneratedDefaultCognitiveServicesAccount,
+  DefaultCognitiveServicesAccount,
   ExhaustiveKnnAlgorithmConfiguration as GeneratedExhaustiveKnnAlgorithmConfiguration,
   HighWaterMarkChangeDetectionPolicy,
   HnswAlgorithmConfiguration as GeneratedHnswAlgorithmConfiguration,
@@ -133,7 +131,6 @@ const knownSkills: Record<`${SearchIndexerSkillUnion["odatatype"]}`, true> = {
   "#Microsoft.Skills.Vision.OcrSkill": true,
   "#Microsoft.Skills.Custom.AmlSkill": true,
   "#Microsoft.Skills.Vision.VectorizeSkill": true,
-  "#Microsoft.Skills.Util.DocumentIntelligenceLayoutSkill": true,
 };
 
 export function convertSkillsToPublic(skills: SearchIndexerSkillUnion[]): SearchIndexerSkill[] {
@@ -152,19 +149,7 @@ export function convertCognitiveServicesAccountToGenerated(
     return cognitiveServicesAccount;
   }
 
-  switch (cognitiveServicesAccount.odatatype) {
-    case "#Microsoft.Azure.Search.AIServicesByIdentity":
-    case "#Microsoft.Azure.Search.DefaultCognitiveServices":
-    case "#Microsoft.Azure.Search.CognitiveServicesByKey":
-    case "#Microsoft.Azure.Search.AIServicesByKey":
-      return cognitiveServicesAccount;
-    default: {
-      logger.warning(
-        `Unsupported Cognitive Services account odatatype: ${(cognitiveServicesAccount as any).odatatype}`,
-      );
-      return cognitiveServicesAccount as any;
-    }
-  }
+  return cognitiveServicesAccount as CognitiveServicesAccountUnion;
 }
 
 export function convertCognitiveServicesAccountToPublic(
@@ -174,37 +159,11 @@ export function convertCognitiveServicesAccountToPublic(
     return cognitiveServicesAccount;
   }
 
-  const deserializers: Record<
-    CognitiveServicesAccountUnion["odatatype"],
-    () => CognitiveServicesAccount
-  > = {
-    "#Microsoft.Azure.Search.DefaultCognitiveServices": () => {
-      return cognitiveServicesAccount as GeneratedDefaultCognitiveServicesAccount;
-    },
-    "#Microsoft.Azure.Search.CognitiveServicesByKey": () => {
-      return cognitiveServicesAccount as GeneratedCognitiveServicesAccountKey;
-    },
-    "#Microsoft.Azure.Search.AIServicesByKey": () => {
-      return cognitiveServicesAccount as GeneratedAIServicesAccountKey;
-    },
-    "#Microsoft.Azure.Search.AIServicesByIdentity": () => {
-      const { identity, ...restParams } =
-        cognitiveServicesAccount as GeneratedAIServicesAccountIdentity;
-      return {
-        ...restParams,
-        identity: convertSearchIndexerDataIdentityToPublic(identity ?? undefined),
-      };
-    },
-  };
-
-  const defaultDeserializer: () => CognitiveServicesAccount = () => {
-    logger.warning(
-      `Unsupported Cognitive Services account odatatype: ${(cognitiveServicesAccount as CognitiveServicesAccount).odatatype}`,
-    );
-    return cognitiveServicesAccount as CognitiveServicesAccount;
-  };
-
-  return (deserializers[cognitiveServicesAccount.odatatype] ?? defaultDeserializer)();
+  if (cognitiveServicesAccount.odatatype === "#Microsoft.Azure.Search.DefaultCognitiveServices") {
+    return cognitiveServicesAccount as DefaultCognitiveServicesAccount;
+  } else {
+    return cognitiveServicesAccount as CognitiveServicesAccountKey;
+  }
 }
 
 export function convertTokenFiltersToGenerated(

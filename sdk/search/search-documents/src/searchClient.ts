@@ -16,7 +16,6 @@ import type {
   IndexDocumentsResult,
   QueryAnswerType as BaseAnswers,
   QueryCaptionType as BaseCaptions,
-  QueryRewritesType as GeneratedQueryRewrites,
   SearchRequest as GeneratedSearchRequest,
   SuggestRequest,
   VectorQueryUnion as GeneratedVectorQuery,
@@ -35,7 +34,6 @@ import type {
   NarrowedModel,
   QueryAnswer,
   QueryCaption,
-  QueryRewrites,
   SearchDocumentsPageResult,
   SearchDocumentsResult,
   SearchFieldArray,
@@ -339,7 +337,6 @@ export class SearchClient<TModel extends object> implements IndexDocumentsClient
       answers,
       captions,
       debugMode,
-      queryRewrites,
       ...restSemanticOptions
     } = semanticSearchOptions ?? {};
     const { queries, filterMode, ...restVectorOptions } = vectorSearchOptions ?? {};
@@ -360,7 +357,6 @@ export class SearchClient<TModel extends object> implements IndexDocumentsClient
       semanticErrorHandling: errorMode,
       semanticConfigurationName: configurationName,
       debug: debugMode,
-      queryRewrites: this.convertQueryRewrites(queryRewrites),
       vectorFilterMode: filterMode,
       hybridSearch: hybridSearch,
     };
@@ -901,7 +897,7 @@ export class SearchClient<TModel extends object> implements IndexDocumentsClient
     }
 
     const config = [];
-    const { answerType: output, count, threshold, maxAnswerLength } = answers;
+    const { answerType: output, count, threshold } = answers;
 
     if (count) {
       config.push(`count-${count}`);
@@ -909,10 +905,6 @@ export class SearchClient<TModel extends object> implements IndexDocumentsClient
 
     if (threshold) {
       config.push(`threshold-${threshold}`);
-    }
-
-    if (maxAnswerLength) {
-      config.push(`maxcharlength-${maxAnswerLength}`);
     }
 
     if (config.length) {
@@ -928,14 +920,10 @@ export class SearchClient<TModel extends object> implements IndexDocumentsClient
     }
 
     const config = [];
-    const { captionType: output, highlight, maxCaptionLength } = captions;
+    const { captionType: output, highlight } = captions;
 
     if (highlight !== undefined) {
       config.push(`highlight-${highlight}`);
-    }
-
-    if (maxCaptionLength) {
-      config.push(`maxcharlength-${maxCaptionLength}`);
     }
 
     if (config.length) {
@@ -946,43 +934,6 @@ export class SearchClient<TModel extends object> implements IndexDocumentsClient
   }
 
   private convertVectorQuery<T extends VectorQuery<TModel>>(vectorQuery: T): GeneratedVectorQuery {
-    switch (vectorQuery.kind) {
-      case "text": {
-        const { fields, queryRewrites, ...restFields } = vectorQuery;
-        return {
-          ...restFields,
-          fields: this.convertVectorQueryFields(fields),
-          queryRewrites: this.convertQueryRewrites(queryRewrites),
-        };
-      }
-      case "vector":
-      case "imageUrl":
-      case "imageBinary": {
-        return { ...vectorQuery, fields: this.convertVectorQueryFields(vectorQuery?.fields) };
-      }
-      default: {
-        logger.warning("Unknown vector query kind; sending without serialization");
-        return vectorQuery as any;
-      }
-    }
-  }
-
-  private convertQueryRewrites(queryRewrites?: QueryRewrites): GeneratedQueryRewrites | undefined {
-    if (!queryRewrites) {
-      return queryRewrites;
-    }
-
-    const { rewritesType: baseOutput } = queryRewrites;
-    switch (baseOutput) {
-      case "generative": {
-        const { count } = queryRewrites;
-
-        const config = [...(count === undefined ? [] : [`count-${count}`])];
-        if (config.length) return baseOutput + `|${config.join(",")}`;
-        return baseOutput;
-      }
-      default:
-        return baseOutput;
-    }
+    return { ...vectorQuery, fields: this.convertVectorQueryFields(vectorQuery?.fields) };
   }
 }

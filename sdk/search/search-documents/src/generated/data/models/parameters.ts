@@ -356,16 +356,6 @@ export const semanticQuery: OperationQueryParameter = {
   },
 };
 
-export const queryRewrites: OperationQueryParameter = {
-  parameterPath: ["options", "searchOptions", "queryRewrites"],
-  mapper: {
-    serializedName: "queryRewrites",
-    type: {
-      name: "String",
-    },
-  },
-};
-
 export const debug: OperationQueryParameter = {
   parameterPath: ["options", "searchOptions", "debug"],
   mapper: {

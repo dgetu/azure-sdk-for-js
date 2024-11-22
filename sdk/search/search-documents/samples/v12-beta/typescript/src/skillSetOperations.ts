@@ -6,8 +6,7 @@
  */
 
 import { DefaultAzureCredential } from "@azure/identity";
-import type { SearchIndexerSkillset } from "@azure/search-documents";
-import { SearchIndexerClient } from "@azure/search-documents";
+import { SearchIndexerClient, SearchIndexerSkillset } from "@azure/search-documents";
 
 import * as dotenv from "dotenv";
 dotenv.config();

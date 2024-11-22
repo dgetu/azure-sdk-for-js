@@ -6,8 +6,7 @@
  */
 
 import { DefaultAzureCredential } from "@azure/identity";
-import type { SynonymMap } from "@azure/search-documents";
-import { SearchIndexClient } from "@azure/search-documents";
+import { SearchIndexClient, SynonymMap } from "@azure/search-documents";
 
 import * as dotenv from "dotenv";
 dotenv.config();

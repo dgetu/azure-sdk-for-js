@@ -4,7 +4,6 @@
 import type { OperationOptions } from "@azure/core-client";
 import type { PagedAsyncIterableIterator } from "@azure/core-paging";
 import type {
-  AIServicesAccountKey,
   AIStudioModelCatalogName,
   AsciiFoldingTokenFilter,
   AzureMachineLearningSkill,
@@ -16,7 +15,6 @@ import type {
   CjkBigramTokenFilter,
   ClassicSimilarity,
   ClassicTokenizer,
-  CognitiveServicesAccount as BaseCognitiveServicesAccount,
   CognitiveServicesAccountKey,
   CommonGramTokenFilter,
   ConditionalSkill,
@@ -27,8 +25,6 @@ import type {
   DictionaryDecompounderTokenFilter,
   DistanceScoringFunction,
   DocumentExtractionSkill,
-  DocumentIntelligenceLayoutSkillMarkdownHeaderDepth,
-  DocumentIntelligenceLayoutSkillOutputMode,
   EdgeNGramTokenFilterSide,
   EdgeNGramTokenizer,
   ElisionTokenFilter,
@@ -77,8 +73,6 @@ import type {
   LuceneStandardAnalyzer,
   MagnitudeScoringFunction,
   MappingCharFilter,
-  MarkdownHeaderDepth,
-  MarkdownParsingSubmode,
   MergeSkill,
   MicrosoftLanguageStemmingTokenizer,
   MicrosoftLanguageTokenizer,
@@ -644,7 +638,6 @@ export type SearchIndexerSkill =
   | ConditionalSkill
   | CustomEntityLookupSkill
   | DocumentExtractionSkill
-  | DocumentIntelligenceLayoutSkill
   | EntityLinkingSkill
   | EntityRecognitionSkill
   | EntityRecognitionSkillV3
@@ -662,34 +655,12 @@ export type SearchIndexerSkill =
   | VisionVectorizeSkill
   | WebApiSkill;
 
-/** A skill that extracts content and layout information (as markdown), via Azure AI Services, from files within the enrichment pipeline. */
-export interface DocumentIntelligenceLayoutSkill extends BaseSearchIndexerSkill {
-  /** Polymorphic discriminator, which specifies the different types this object can be */
-  odatatype: "#Microsoft.Skills.Util.DocumentIntelligenceLayoutSkill";
-  /** Controls the cardinality of the output produced by the skill. Default is 'oneToMany'. */
-  outputMode?: DocumentIntelligenceLayoutSkillOutputMode;
-  /** The depth of headers in the markdown output. Default is h6. */
-  markdownHeaderDepth?: DocumentIntelligenceLayoutSkillMarkdownHeaderDepth;
-}
-
 /**
  * Contains the possible cases for CognitiveServicesAccount.
  */
 export type CognitiveServicesAccount =
   | DefaultCognitiveServicesAccount
-  | CognitiveServicesAccountKey
-  | AIServicesAccountKey
-  | AIServicesAccountIdentity;
-
-/** The multi-region account of an Azure AI service resource that's attached to a skillset. */
-export interface AIServicesAccountIdentity extends BaseCognitiveServicesAccount {
-  /** Polymorphic discriminator, which specifies the different types this object can be */
-  odatatype: "#Microsoft.Azure.Search.AIServicesByIdentity";
-  /** The user-assigned managed identity used for connections to AI Service. If not specified, the system-assigned managed identity is used. On updates to the skillset, if the identity is unspecified, the value remains unchanged. If set to "none", the value of this property is cleared. */
-  identity?: SearchIndexerDataIdentity;
-  /** The subdomain url for the corresponding AI Service. */
-  subdomainUrl: string;
-}
+  | CognitiveServicesAccountKey;
 /**
  * Tokenizer that uses regex pattern matching to construct distinct tokens. This tokenizer is
  * implemented using Apache Lucene.
@@ -2408,7 +2379,7 @@ export interface IndexingParametersConfiguration {
   failOnUnsupportedContentType?: boolean;
   /** For Azure blobs, set to false if you want to continue indexing if a document fails indexing. */
   failOnUnprocessableDocument?: boolean;
-  /** For Azure blobs, set this property to true to still index storage metadata for blob content that is too large to process. Oversized blobs are treated as errors by default. For limits on blob size, see https://learn.microsoft.com/azure/search/search-limits-quotas-capacity. */
+  /** For Azure blobs, set this property to true to still index storage metadata for blob content that is too large to process. Oversized blobs are treated as errors by default. For limits on blob size, see https://docs.microsoft.com/azure/search/search-limits-quotas-capacity. */
   indexStorageMetadataOnlyForOversizedDocuments?: boolean;
   /** For CSV blobs, specifies a comma-delimited list of column headers, useful for mapping source fields to destination fields in an index. */
   delimitedTextHeaders?: string;
@@ -2416,10 +2387,6 @@ export interface IndexingParametersConfiguration {
   delimitedTextDelimiter?: string;
   /** For CSV blobs, indicates that the first (non-blank) line of each blob contains headers. */
   firstLineContainsHeaders?: boolean;
-  /** Specifies the submode that will determine whether a markdown file will be parsed into exactly one search document or multiple search documents. Default is `oneToMany`. */
-  markdownParsingSubmode?: MarkdownParsingSubmode;
-  /** Specifies the max header depth that will be considered while grouping markdown content. Default is `h6`. */
-  markdownHeaderDepth?: MarkdownHeaderDepth;
   /** For JSON arrays, given a structured or semi-structured document, you can specify a path to the array using this property. */
   documentRoot?: string;
   /** Specifies the data to extract from Azure blob storage and tells the indexer which data to extract from image content when "imageAction" is set to a value other than "none".  This applies to embedded image content in a .PDF or other application, or image files such as .jpg and .png, in Azure blobs. */
